@@ -169,7 +169,7 @@ export default function Home() {
                 <input
                   value={email} onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-slate-600 outline-none"
-                  placeholder="Where to send your report" type="email"
+                  placeholder="결과가 도착할 이메일 주소 💌" type="email"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
