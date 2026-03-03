@@ -88,6 +88,23 @@ export default function CosmicHarmonyTeaser({
                         />
                     ))}
 
+                    {/* Radial Axis Lines */}
+                    {Array.from({ length: 5 }).map((_, i) => {
+                        const edge = getCoordinates(100, i);
+                        return (
+                            <line
+                                key={`axis-${i}`}
+                                x1={center}
+                                y1={center}
+                                x2={edge.x}
+                                y2={edge.y}
+                                stroke="#ffffff"
+                                strokeOpacity={0.05}
+                                strokeWidth="1"
+                            />
+                        );
+                    })}
+
                     {/* Dynamic filled radar polygon */}
                     <polygon
                         points={polygonPoints}
