@@ -38,7 +38,7 @@ export async function POST(request: Request) {
         let insight = `The cosmic synergy between you and your bias shows a profound resonant frequency in the realm of passion. Your charts suggest a karmic connection that transcends ordinary interactions.`;
 
         try {
-            const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash', generationConfig: { responseMimeType: "application/json" } });
+            const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite', generationConfig: { responseMimeType: "application/json" } });
             const prompt = `You are a K-Pop Destiny analyst combining Korean Saju and Western astrology.
             Generate a fast, exciting teaser analysis for user "${nickname}" and K-Pop idol "${idolNameStr}".
             Return ONLY a valid JSON object with this exact structure (no markdown wrapper, just JSON):
