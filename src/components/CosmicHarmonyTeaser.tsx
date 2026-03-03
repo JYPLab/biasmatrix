@@ -132,8 +132,9 @@ export default function CosmicHarmonyTeaser({
                             <text
                                 x="16"
                                 y="22"
+                                fill="#E5C158"
                                 textAnchor="middle"
-                                className="material-symbols-outlined text-[#E5C158] drop-shadow-sm text-[18px]"
+                                className="material-symbols-outlined drop-shadow-sm text-[18px]"
                             >
                                 {pos.data.icon}
                             </text>
