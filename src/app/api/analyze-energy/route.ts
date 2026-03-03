@@ -68,7 +68,7 @@ Analyze the elemental compatibility (Korean Saju) between the User and their Bia
 
 # Input Data for Analysis
 - User Name: ${nickname}
-- User Birth Details: ${year}/${month}/${day} ${birthTime ? `at ${birthTime}` : '(Time Unknown)'}
+- User Birth Details: ${birth_date} ${birth_time ? `at ${birth_time}` : '(Time Unknown)'}
 - Idol Name: ${idolNameStr}
 `;
 
