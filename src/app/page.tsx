@@ -337,7 +337,7 @@ export default function Home() {
             <div className="glass-panel rounded-2xl p-6 relative overflow-hidden">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h3 className="font-serif text-xl text-white">Your BiasMatrix Score</h3>
+                  <h3 className="font-serif text-xl text-white">Your Cosmic Harmony</h3>
                   <p className="text-xs text-slate-400 mt-1">Based on 5 elemental pillars</p>
                 </div>
                 <div className="text-right">
@@ -350,24 +350,24 @@ export default function Home() {
                   <polygon fill="none" points="50,5 95,38 82,90 18,90 5,38" stroke="currentColor" strokeWidth="0.5"></polygon>
                   <polygon fill="none" points="50,25 72,41 66,67 34,67 28,41" stroke="currentColor" strokeWidth="0.5"></polygon>
                 </svg>
-                <div className="radar-chart w-32 h-32 bg-gradient-to-tr from-primary/30 to-primary/10 border border-primary/50 relative z-10 backdrop-blur-sm flex items-center justify-center">
-                  <span className="text-[10px] font-bold text-primary-light uppercase text-center leading-tight">SYNERGY<br />HIGH</span>
+                <div className="radar-chart w-32 h-32 bg-gradient-to-tr from-primary/30 to-primary/10 border border-primary/50 relative z-10 backdrop-blur-sm flex items-center justify-center p-2 text-center">
+                  <span className="text-[10px] font-bold text-primary-light uppercase leading-tight tracking-widest">{String(teaserData.connectionType || 'KARMIC SPARK')}</span>
                 </div>
 
                 <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-surface border border-white/10 p-1.5 rounded-full text-primary shadow-lg z-20">
                   <span className="material-symbols-outlined text-sm">local_fire_department</span>
                 </div>
                 <div className="absolute top-[35%] right-2 bg-surface border border-white/10 p-1.5 rounded-full text-slate-500 shadow-lg z-20">
-                  <span className="material-symbols-outlined text-sm">landscape</span>
+                  <span className="material-symbols-outlined text-sm">diamond</span>
                 </div>
                 <div className="absolute bottom-[15%] right-8 bg-surface border border-white/10 p-1.5 rounded-full text-slate-500 shadow-lg z-20">
-                  <span className="material-symbols-outlined text-sm">hardware</span>
+                  <span className="material-symbols-outlined text-sm">token</span>
                 </div>
                 <div className="absolute bottom-[15%] left-8 bg-surface border border-white/10 p-1.5 rounded-full text-primary shadow-lg z-20">
                   <span className="material-symbols-outlined text-sm">water_drop</span>
                 </div>
                 <div className="absolute top-[35%] left-2 bg-surface border border-white/10 p-1.5 rounded-full text-primary shadow-lg z-20">
-                  <span className="material-symbols-outlined text-sm">forest</span>
+                  <span className="material-symbols-outlined text-sm">auto_awesome</span>
                 </div>
               </div>
 

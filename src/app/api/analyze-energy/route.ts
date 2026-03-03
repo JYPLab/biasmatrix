@@ -32,18 +32,21 @@ export async function POST(request: Request) {
         const { data: idol } = await supabase.from('idols').select('group_name, member_name').eq('id', idol_id).single();
         const idolNameStr = idol ? `${idol.group_name} ${idol.member_name}` : 'your chosen idol';
 
-        // 4. Generate Freemium metadata dynamically using Gemini 1.5 Flash
+        // 4. Generate Freemium metadata dynamically using Gemini 2.5 Flash Lite
         let score = 88;
         let pentagonStats = { communication: 90, passion: 85, empathy: 88, destiny: 95, growth: 82 };
         let insight = `The cosmic synergy between you and your bias shows a profound resonant frequency in the realm of passion. Your charts suggest a karmic connection that transcends ordinary interactions.`;
+        let connectionType = 'KARMIC SPARK';
 
         try {
             const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite', generationConfig: { responseMimeType: "application/json" } });
-            const prompt = `You are a K-Pop Destiny analyst combining Korean Saju and Western astrology.
-            Generate a fast, exciting teaser analysis for user "${nickname}" and K-Pop idol "${idolNameStr}".
+            const prompt = `You are an elite, mystical astrologer and K-Pop Destiny analyst combining ancient Korean Saju with modern Western astrology. Your target audience is 20-something female professionals in the US who love K-Pop but also appreciate deep, emotional, and elegant esoteric readings.
+            Generate a fast, highly emotional, and story-driven teaser analysis for user "${nickname}" and K-Pop idol "${idolNameStr}".
+            Avoid clinical elemental descriptions. Instead, craft a poetic, irresistible 'hook' that makes them feel a profound, destined connection and desperately want to read the full report.
             Return ONLY a valid JSON object with this exact structure (no markdown wrapper, just JSON):
             {
                 "score": <number integer between 75 and 99>,
+                "connectionType": "<1-3 words describing the bond, e.g., 'SOUL NURTURING', 'KARMIC SPARK', 'TWIN FLAME'>",
                 "pentagonStats": {
                     "communication": <number integer between 70 and 99>,
                     "passion": <number integer between 70 and 99>,
@@ -51,7 +54,7 @@ export async function POST(request: Request) {
                     "destiny": <number integer between 70 and 99>,
                     "growth": <number integer between 70 and 99>
                 },
-                "insight": "<1 short, exciting sentence catching their attention about their karmic synergy>"
+                "insight": "<1-2 short, elegant, highly emotional sentences catching their attention about their karmic synergy>"
             }`;
 
             const result = await model.generateContent(prompt);
@@ -61,6 +64,7 @@ export async function POST(request: Request) {
             if (payload.score) score = payload.score;
             if (payload.pentagonStats) pentagonStats = payload.pentagonStats;
             if (payload.insight) insight = payload.insight;
+            if (payload.connectionType) connectionType = payload.connectionType;
         } catch (geminiError) {
             console.error("Gemini freemium generation failed. Using fallback:", geminiError);
         }
@@ -82,6 +86,7 @@ export async function POST(request: Request) {
             reportId: report.id,
             teaser: {
                 score,
+                connectionType,
                 pentagonStats,
                 insight
             }
