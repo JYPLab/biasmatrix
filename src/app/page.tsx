@@ -32,6 +32,7 @@ export default function Home() {
   const [idols, setIdols] = useState<Idol[]>([]);
   const [selectedGroup, setSelectedGroup] = useState('BTS');
   const [selectedMember, setSelectedMember] = useState('');
+  const [openDropdown, setOpenDropdown] = useState<'group' | 'member' | null>(null);
 
   // Fetch idols
   useEffect(() => {
@@ -171,38 +172,55 @@ export default function Home() {
 
         {/* SELECTORS */}
         <section className="px-6 space-y-3">
-          <div className="relative group">
-            <div className="glass-panel p-4 rounded-xl flex items-center justify-between group-hover:border-primary/50 transition-colors relative">
-              <span className="text-slate-400 text-sm font-medium z-0 pointer-events-none">K-POP GROUP</span>
-              <div className="flex items-center gap-2 text-white z-0 pointer-events-none">
+          <div className="relative z-20">
+            <div
+              onClick={() => setOpenDropdown(prev => prev === 'group' ? null : 'group')}
+              className="glass-panel p-4 rounded-xl flex items-center justify-between hover:border-primary/50 cursor-pointer transition-colors"
+            >
+              <span className="text-slate-400 text-sm font-medium">K-POP GROUP</span>
+              <div className="flex items-center gap-2 text-white">
                 <span className="font-serif">{selectedGroup}</span>
-                <span className="material-symbols-outlined text-slate-500">expand_more</span>
+                <span className={`material-symbols-outlined text-slate-500 transition-transform ${openDropdown === 'group' ? 'rotate-180' : ''}`}>expand_more</span>
               </div>
-              <select
-                value={selectedGroup}
-                onChange={(e) => setSelectedGroup(e.target.value)}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none z-10"
-              >
-                {availableGroups.map(g => <option key={g} value={g} className="text-black">{g}</option>)}
-              </select>
             </div>
+            {openDropdown === 'group' && (
+              <div className="absolute top-full mt-2 w-full bg-onyx/95 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden z-50 flex flex-col max-h-48 overflow-y-auto shadow-2xl animate-in slide-in-from-top-2">
+                {availableGroups.map(g => (
+                  <button
+                    key={g}
+                    onClick={() => { setSelectedGroup(g); setOpenDropdown(null); }}
+                    className="text-left px-4 py-3 hover:bg-white/10 text-white transition-colors border-b border-white/10 last:border-none"
+                  >
+                    {g}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
-          <div className="relative group">
-            <div className="glass-panel p-4 rounded-xl flex items-center justify-between group-hover:border-primary/50 transition-colors relative">
-              <span className="text-slate-400 text-sm font-medium z-0 pointer-events-none">SELECT MEMBER</span>
-              <div className="flex items-center gap-2 text-white z-0 pointer-events-none">
+          <div className="relative z-10">
+            <div
+              onClick={() => { if (availableMembers.length > 0) setOpenDropdown(prev => prev === 'member' ? null : 'member') }}
+              className={`glass-panel p-4 rounded-xl flex items-center justify-between transition-colors ${availableMembers.length > 0 ? 'hover:border-primary/50 cursor-pointer' : 'opacity-50'}`}
+            >
+              <span className="text-slate-400 text-sm font-medium">SELECT MEMBER</span>
+              <div className="flex items-center gap-2 text-white">
                 <span className="font-serif">{availableMembers.find(m => m.id === selectedMember)?.member_name || 'Loading...'}</span>
-                <span className="material-symbols-outlined text-slate-500">expand_more</span>
+                <span className={`material-symbols-outlined text-slate-500 transition-transform ${openDropdown === 'member' ? 'rotate-180' : ''}`}>expand_more</span>
               </div>
-              <select
-                value={selectedMember}
-                onChange={(e) => setSelectedMember(e.target.value)}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none z-10"
-                disabled={availableMembers.length === 0}
-              >
-                {availableMembers.map(m => <option key={m.id} value={m.id} className="text-black">{m.member_name}</option>)}
-              </select>
             </div>
+            {openDropdown === 'member' && (
+              <div className="absolute top-full mt-2 w-full bg-onyx/95 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden z-50 flex flex-col max-h-48 overflow-y-auto shadow-2xl animate-in slide-in-from-top-2">
+                {availableMembers.map(m => (
+                  <button
+                    key={m.id}
+                    onClick={() => { setSelectedMember(m.id); setOpenDropdown(null); }}
+                    className="text-left px-4 py-3 hover:bg-white/10 text-white transition-colors border-b border-white/10 last:border-none"
+                  >
+                    {m.member_name}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
