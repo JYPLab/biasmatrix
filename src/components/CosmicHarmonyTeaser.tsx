@@ -126,20 +126,33 @@ export default function CosmicHarmonyTeaser({
                     </text>
 
                     {/* Element Icons */}
-                    {labelPositions.map((pos, i) => (
-                        <g key={`label-${i}`} transform={`translate(${pos.x - 16}, ${pos.y - 16})`}>
-                            <circle cx="16" cy="16" r="18" fill="#18181B" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-                            <text
-                                x="16"
-                                y="22"
-                                fill="#E5C158"
-                                textAnchor="middle"
-                                className="material-symbols-outlined drop-shadow-sm text-[18px]"
-                            >
-                                {pos.data.icon}
-                            </text>
-                        </g>
-                    ))}
+                    {labelPositions.map((pos, i) => {
+                        const elementColors: Record<string, string> = {
+                            'Fire': '#FF6B6B',  // Mystical Coral Red
+                            'Earth': '#E5C158', // Champagne Gold
+                            'Metal': '#E2E8F0', // Shimmering Silver
+                            'Water': '#60A5FA', // Celestial Blue
+                            'Wood': '#34D399'   // Emerald Green
+                        };
+                        const color = elementColors[pos.data.element] || '#E5C158';
+
+                        return (
+                            <g key={`label-${i}`} transform={`translate(${pos.x - 16}, ${pos.y - 16})`}>
+                                {/* Subtle tinted border matching the element color */}
+                                <circle cx="16" cy="16" r="18" fill="#18181B" stroke={color} strokeOpacity={0.25} strokeWidth="1" />
+                                <text
+                                    x="16"
+                                    y="22"
+                                    fill={color}
+                                    textAnchor="middle"
+                                    className="material-symbols-outlined drop-shadow-[0_0_8px_currentColor] text-[18px]"
+                                    style={{ color: color }} // Ensures currentColor shadow matches
+                                >
+                                    {pos.data.icon}
+                                </text>
+                            </g>
+                        );
+                    })}
                 </svg>
             </div>
 
