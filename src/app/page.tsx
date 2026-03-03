@@ -173,15 +173,15 @@ export default function Home() {
         <section className="px-6 space-y-3">
           <div className="relative group">
             <div className="glass-panel p-4 rounded-xl flex items-center justify-between group-hover:border-primary/50 transition-colors relative">
-              <span className="text-slate-400 text-sm font-medium z-0">K-POP GROUP</span>
-              <div className="flex items-center gap-2 text-white z-0">
+              <span className="text-slate-400 text-sm font-medium z-0 pointer-events-none">K-POP GROUP</span>
+              <div className="flex items-center gap-2 text-white z-0 pointer-events-none">
                 <span className="font-serif">{selectedGroup}</span>
                 <span className="material-symbols-outlined text-slate-500">expand_more</span>
               </div>
               <select
                 value={selectedGroup}
                 onChange={(e) => setSelectedGroup(e.target.value)}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none"
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none z-10"
               >
                 {availableGroups.map(g => <option key={g} value={g} className="text-black">{g}</option>)}
               </select>
@@ -189,15 +189,15 @@ export default function Home() {
           </div>
           <div className="relative group">
             <div className="glass-panel p-4 rounded-xl flex items-center justify-between group-hover:border-primary/50 transition-colors relative">
-              <span className="text-slate-400 text-sm font-medium z-0">SELECT MEMBER</span>
-              <div className="flex items-center gap-2 text-white z-0">
+              <span className="text-slate-400 text-sm font-medium z-0 pointer-events-none">SELECT MEMBER</span>
+              <div className="flex items-center gap-2 text-white z-0 pointer-events-none">
                 <span className="font-serif">{availableMembers.find(m => m.id === selectedMember)?.member_name || 'Loading...'}</span>
                 <span className="material-symbols-outlined text-slate-500">expand_more</span>
               </div>
               <select
                 value={selectedMember}
                 onChange={(e) => setSelectedMember(e.target.value)}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none"
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none z-10"
                 disabled={availableMembers.length === 0}
               >
                 {availableMembers.map(m => <option key={m.id} value={m.id} className="text-black">{m.member_name}</option>)}
