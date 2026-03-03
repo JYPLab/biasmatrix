@@ -1,8 +1,15 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useDebounce } from 'use-debounce';
 import axios from 'axios';
+import { supabase } from '@/lib/supabase';
+
+interface Idol {
+  id: string;
+  group_name: string;
+  member_name: string;
+}
 
 export default function Home() {
   const [name, setName] = useState('');
@@ -22,8 +29,40 @@ export default function Home() {
   const [showDropdown, setShowDropdown] = useState(false);
 
   // Group & Member state
+  const [idols, setIdols] = useState<Idol[]>([]);
   const [selectedGroup, setSelectedGroup] = useState('BTS');
-  const [selectedMember, setSelectedMember] = useState('Jungkook');
+  const [selectedMember, setSelectedMember] = useState('');
+
+  // Fetch idols
+  useEffect(() => {
+    async function fetchIdols() {
+      const { data } = await supabase.from('idols').select('*');
+      if (data) {
+        setIdols(data);
+        const btsMembers = data.filter(i => i.group_name === 'BTS').sort((a, b) => a.member_name.localeCompare(b.member_name));
+        if (btsMembers.length > 0) {
+          const jk = btsMembers.find(m => m.member_name === 'Jungkook');
+          setSelectedMember(jk ? jk.id : btsMembers[0].id);
+        }
+      }
+    }
+    fetchIdols();
+  }, []);
+
+  const availableGroups = useMemo(() => {
+    const groups = new Set(idols.map(i => i.group_name));
+    return Array.from(groups).sort();
+  }, [idols]);
+
+  const availableMembers = useMemo(() => {
+    return idols.filter(i => i.group_name === selectedGroup).sort((a, b) => a.member_name.localeCompare(b.member_name));
+  }, [idols, selectedGroup]);
+
+  useEffect(() => {
+    if (availableMembers.length > 0 && !availableMembers.find(m => m.id === selectedMember)) {
+      setSelectedMember(availableMembers[0].id);
+    }
+  }, [selectedGroup, availableMembers, selectedMember]);
 
   // API State
   const [isLoading, setIsLoading] = useState(false);
@@ -81,7 +120,7 @@ export default function Home() {
         longitude: parseFloat(String(selectedCity.lon || '0')),
         is_time_known: !isTimeUnknown,
         birth_time: isTimeUnknown ? null : birthTime,
-        idol_id: 'a12b3c4d-e5f6-7a8b-9c0d-1e2f3a4b5c6d', // Replace with real idol UUID from DB later
+        idol_id: selectedMember,
       };
 
       const res = await axios.post('/api/analyze-energy', payload);
@@ -133,21 +172,36 @@ export default function Home() {
         {/* SELECTORS */}
         <section className="px-6 space-y-3">
           <div className="relative group">
-            <div className="glass-panel p-4 rounded-xl flex items-center justify-between cursor-pointer group-hover:border-primary/50 transition-colors">
-              <span className="text-slate-400 text-sm font-medium">K-POP GROUP</span>
-              <div className="flex items-center gap-2 text-white">
-                <span className="font-serif">BTS</span>
+            <div className="glass-panel p-4 rounded-xl flex items-center justify-between group-hover:border-primary/50 transition-colors relative">
+              <span className="text-slate-400 text-sm font-medium z-0">K-POP GROUP</span>
+              <div className="flex items-center gap-2 text-white z-0">
+                <span className="font-serif">{selectedGroup}</span>
                 <span className="material-symbols-outlined text-slate-500">expand_more</span>
               </div>
+              <select
+                value={selectedGroup}
+                onChange={(e) => setSelectedGroup(e.target.value)}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none"
+              >
+                {availableGroups.map(g => <option key={g} value={g} className="text-black">{g}</option>)}
+              </select>
             </div>
           </div>
           <div className="relative group">
-            <div className="glass-panel p-4 rounded-xl flex items-center justify-between cursor-pointer group-hover:border-primary/50 transition-colors">
-              <span className="text-slate-400 text-sm font-medium">SELECT MEMBER</span>
-              <div className="flex items-center gap-2 text-white">
-                <span className="font-serif">Jungkook</span>
+            <div className="glass-panel p-4 rounded-xl flex items-center justify-between group-hover:border-primary/50 transition-colors relative">
+              <span className="text-slate-400 text-sm font-medium z-0">SELECT MEMBER</span>
+              <div className="flex items-center gap-2 text-white z-0">
+                <span className="font-serif">{availableMembers.find(m => m.id === selectedMember)?.member_name || 'Loading...'}</span>
                 <span className="material-symbols-outlined text-slate-500">expand_more</span>
               </div>
+              <select
+                value={selectedMember}
+                onChange={(e) => setSelectedMember(e.target.value)}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none"
+                disabled={availableMembers.length === 0}
+              >
+                {availableMembers.map(m => <option key={m.id} value={m.id} className="text-black">{m.member_name}</option>)}
+              </select>
             </div>
           </div>
         </section>
@@ -169,7 +223,7 @@ export default function Home() {
                 <input
                   value={email} onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-slate-600 outline-none"
-                  placeholder="결과가 도착할 이메일 주소 💌" type="email"
+                  placeholder="Where should we email your report? 💌" type="email"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
