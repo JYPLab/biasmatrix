@@ -4,11 +4,23 @@ import { useState, useEffect, useMemo } from 'react';
 import { useDebounce } from 'use-debounce';
 import axios from 'axios';
 import { supabase } from '@/lib/supabase';
+import CosmicHarmonyTeaser from "@/components/CosmicHarmonyTeaser";
 
 interface Idol {
   id: string;
   group_name: string;
   member_name: string;
+}
+
+interface TeaserData {
+  score: number;
+  keyword: string;
+  teaserText: string;
+  elementsData: {
+    element: string;
+    value: number;
+    icon: string;
+  }[];
 }
 
 export default function Home() {
@@ -67,7 +79,7 @@ export default function Home() {
 
   // API State
   const [isLoading, setIsLoading] = useState(false);
-  const [teaserData, setTeaserData] = useState<Record<string, unknown> | null>(null);
+  const [teaserData, setTeaserData] = useState<TeaserData | null>(null);
   const [reportId, setReportId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -333,51 +345,20 @@ export default function Home() {
 
         {/* FREEMIUM RESULT (Hidden by default, shown for UI demonstration) */}
         {teaserData && (
-          <section className="px-4">
-            <div className="glass-panel rounded-2xl p-6 relative overflow-hidden">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h3 className="font-serif text-xl text-white">Your Cosmic Harmony</h3>
-                  <p className="text-xs text-slate-400 mt-1">Based on 5 elemental pillars</p>
-                </div>
-                <div className="text-right">
-                  <span className="text-3xl font-serif text-primary italic">{String(teaserData.score || '88')}</span><span className="text-sm text-slate-500">/100</span>
-                </div>
-              </div>
-
-              <div className="relative h-56 w-full flex items-center justify-center mb-6">
-                <svg className="absolute w-48 h-48 text-white/5" viewBox="0 0 100 100">
-                  <polygon fill="none" points="50,5 95,38 82,90 18,90 5,38" stroke="currentColor" strokeWidth="0.5"></polygon>
-                  <polygon fill="none" points="50,25 72,41 66,67 34,67 28,41" stroke="currentColor" strokeWidth="0.5"></polygon>
-                </svg>
-                <div className="radar-chart w-32 h-32 bg-gradient-to-tr from-primary/30 to-primary/10 border border-primary/50 relative z-10 backdrop-blur-sm flex items-center justify-center p-2 text-center">
-                  <span className="text-[10px] font-bold text-primary-light uppercase leading-tight tracking-widest">{String(teaserData.connectionType || 'KARMIC SPARK')}</span>
-                </div>
-
-                <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-surface border border-white/10 p-1.5 rounded-full text-primary shadow-lg z-20">
-                  <span className="material-symbols-outlined text-sm">local_fire_department</span>
-                </div>
-                <div className="absolute top-[35%] right-2 bg-surface border border-white/10 p-1.5 rounded-full text-slate-500 shadow-lg z-20">
-                  <span className="material-symbols-outlined text-sm">diamond</span>
-                </div>
-                <div className="absolute bottom-[15%] right-8 bg-surface border border-white/10 p-1.5 rounded-full text-slate-500 shadow-lg z-20">
-                  <span className="material-symbols-outlined text-sm">token</span>
-                </div>
-                <div className="absolute bottom-[15%] left-8 bg-surface border border-white/10 p-1.5 rounded-full text-primary shadow-lg z-20">
-                  <span className="material-symbols-outlined text-sm">water_drop</span>
-                </div>
-                <div className="absolute top-[35%] left-2 bg-surface border border-white/10 p-1.5 rounded-full text-primary shadow-lg z-20">
-                  <span className="material-symbols-outlined text-sm">auto_awesome</span>
-                </div>
-              </div>
-
-              <div className="bg-surface/50 rounded-xl p-4 border border-white/5">
-                <p className="text-sm text-slate-300 leading-relaxed text-center font-serif">
-                  {String(teaserData.insight || "Your Wood and Fire elements create a nurturing cycle with Jungkook's dominant Earth energy.")}
-                </p>
-              </div>
-            </div>
-          </section>
+          <div className="px-4">
+            <CosmicHarmonyTeaser
+              score={teaserData.score || 88}
+              keyword={teaserData.keyword || 'KARMIC SPARK'}
+              teaserText={teaserData.teaserText || 'Your spirits whisper across galaxies, a cosmic melody woven from stardust.'}
+              elementsData={teaserData.elementsData || [
+                { element: 'Fire', value: 90, icon: 'local_fire_department' },
+                { element: 'Earth', value: 70, icon: 'diamond' },
+                { element: 'Metal', value: 50, icon: 'token' },
+                { element: 'Water', value: 40, icon: 'water_drop' },
+                { element: 'Wood', value: 85, icon: 'auto_awesome' }
+              ]}
+            />
+          </div>
         )}
 
         {/* PAYWALL CONTENT */}
