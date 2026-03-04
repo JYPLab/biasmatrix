@@ -58,6 +58,12 @@ export default function ReportView({ reportData, mock }: { reportData: ReportDat
                     </h2>
                 </div>
 
+                {chapterData.pullQuote && (
+                    <div className="mb-8 mt-2 pl-6 border-l-2 border-primary/50 text-primary italic text-xl font-serif tracking-wide leading-relaxed print:text-slate-600 print:border-slate-300">
+                        "{chapterData.pullQuote}"
+                    </div>
+                )}
+
                 {/* Dynamically render all array-based paragraphs within the chapter object */}
                 {Object.keys(chapterData).map(key => {
                     if (key === 'title') return null;
