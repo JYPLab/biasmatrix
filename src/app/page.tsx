@@ -460,18 +460,28 @@ export default function Home() {
                   alert("Please submit your Celestial Profile first to unlock the report.");
                   return;
                 }
-                const handleCheckout = async () => {
+                const handleMockCheckout = async () => {
                   try {
-                    const res = await axios.post('/api/create-checkout', { reportId });
-                    if (res.data.checkoutUrl) {
-                      window.location.href = res.data.checkoutUrl;
+                    alert("Initiating Mock E2E Trigger. Generating massive 15-page report (takes 10-20s) and sending email...");
+                    const res = await axios.post('/api/webhook/payment', {
+                      meta: {
+                        event_name: 'order_created',
+                        custom_data: { report_id: reportId }
+                      }
+                    }, {
+                      headers: { 'x-mock-bypass': 'true' }
+                    });
+                    if (res.data.success) {
+                      alert("Success! The AI magic is done. Please check your email inbox for the private link.");
+                    } else {
+                      alert("Mock webhook failed: " + res.data.error);
                     }
                   } catch (err) {
-                    console.error("Checkout error:", err);
-                    alert("Unable to initiate checkout. Please try again later.");
+                    console.error("Mock Checkout error:", err);
+                    alert("Error triggering mock webhook. Check console.");
                   }
                 };
-                handleCheckout();
+                handleMockCheckout();
               }}
               className="w-full bg-onyx rounded-[11px] px-4 py-3 flex items-center justify-between relative overflow-hidden group"
             >
