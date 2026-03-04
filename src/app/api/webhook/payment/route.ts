@@ -105,8 +105,8 @@ Generate a massive, deeply detailed destiny report analyzing the cosmic compatib
                 // 5. Send Email via Resend in Persona
                 const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
                 const magicLink = `${appUrl}/report/${reportId}`;
-                await resend.emails.send({
-                    from: 'BiasMatrix Oracle <hello@soulmatch.com>',
+                const { data: emailData, error: emailError } = await resend.emails.send({
+                    from: 'BiasMatrix Oracle <onboarding@resend.dev>',
                     to: report.users.email,
                     subject: `The stars have spoken. Your Cosmic Harmony with ${report.idols.member_name} is ready. \u2728`,
                     html: `
@@ -126,6 +126,11 @@ Generate a massive, deeply detailed destiny report analyzing the cosmic compatib
                         </p>
                     </div>`
                 });
+
+                if (emailError) {
+                    console.error("Resend API failed to send email:", emailError);
+                    return NextResponse.json({ success: false, error: "Email delivery failed", details: emailError }, { status: 500 });
+                }
             }
         }
 
