@@ -5,6 +5,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
   --font-serif: var(--font-playfair);
+  --font-lora: var(--font-lora);
 
   --color-primary: #D4AF37;
   --color-primary-light: #F5E076;

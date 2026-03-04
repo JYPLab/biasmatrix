@@ -122,7 +122,7 @@ export default function ReportView({ reportData, mock }: { reportData: ReportDat
                     </h2>
                 </div>
 
-                <div className="space-y-6 text-[#E0E0E0] text-[15px] leading-[1.9] tracking-wide font-light">
+                <div className="space-y-6 text-[#E0E0E0] text-[15px] leading-[1.9] tracking-wide font-light font-lora">
                     {firstHalf.map((p, i) => (
                         <p key={`p1-${i}`}>{p}</p>
                     ))}
@@ -136,7 +136,7 @@ export default function ReportView({ reportData, mock }: { reportData: ReportDat
                     </div>
                 )}
 
-                <div className="space-y-6 text-[#E0E0E0] text-[15px] leading-[1.9] tracking-wide font-light">
+                <div className="space-y-6 text-[#E0E0E0] text-[15px] leading-[1.9] tracking-wide font-light font-lora">
                     {secondHalf.map((p, i) => (
                         <p key={`p2-${i}`}>{p}</p>
                     ))}
@@ -198,7 +198,7 @@ export default function ReportView({ reportData, mock }: { reportData: ReportDat
                 {/* Introduction */}
                 {content.introduction && (
                     <div className="mb-24 max-w-xl mx-auto px-6">
-                        <div className="space-y-6 text-[#E0E0E0] text-[15px] leading-[1.9] tracking-wide font-light">
+                        <div className="space-y-6 text-[#E0E0E0] text-[15px] leading-[1.9] tracking-wide font-light font-lora">
                             {content.introduction.paragraphs?.map((p, i) => (
                                 <p key={i}>{p}</p>
                             ))}
@@ -239,7 +239,7 @@ export default function ReportView({ reportData, mock }: { reportData: ReportDat
                     <section className="mt-32 mb-32 max-w-xl mx-auto px-6 text-center border-t border-[#D4AF37]/20 pt-16">
                         <span className="material-symbols-outlined text-[#D4AF37] text-4xl mb-6">wb_incandescent</span>
                         <h2 className="text-3xl font-serif text-white mb-8 tracking-wide">{content.conclusion.title || 'The Final Oracle'}</h2>
-                        <div className="space-y-6 text-[#E0E0E0] text-[15px] leading-[1.9] tracking-wide font-light">
+                        <div className="space-y-6 text-[#E0E0E0] text-[15px] leading-[1.9] tracking-wide font-light font-lora">
                             {content.conclusion.paragraphs?.map((p, i) => (
                                 <p key={i} className={i === content.conclusion!.paragraphs!.length - 1 ? "text-[#D4AF37] italic text-xl mt-12 font-serif" : ""}>
                                     {p}

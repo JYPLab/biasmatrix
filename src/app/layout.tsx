@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Playfair_Display, Lora } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
+});
+
+const lora = Lora({
+  variable: "--font-lora",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  weight: ["400", "500", "600"],
 });
 
 const playfair = Playfair_Display({
@@ -32,7 +39,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body
-        className={`${inter.variable} ${playfair.variable} antialiased bg-onyx text-slate-100 font-sans min-h-screen relative overflow-x-hidden selection:bg-primary selection:text-onyx`}
+        className={`${inter.variable} ${playfair.variable} ${lora.variable} antialiased bg-onyx text-slate-100 font-sans min-h-screen relative overflow-x-hidden selection:bg-primary selection:text-onyx`}
       >
         <div className="fixed inset-0 z-0 pointer-events-none bg-aurora opacity-100"></div>
         <div className="fixed inset-0 z-0 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay"></div>
