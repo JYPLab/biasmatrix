@@ -5,7 +5,19 @@ import Link from 'next/link';
 
 interface SubSection {
     title?: string;
+    pullQuote?: string;
     paragraphs?: string[];
+    userEnergy?: string[];
+    idolEnergy?: string[];
+    magneticIntersection?: string[];
+    nurturingCycle?: string[];
+    dynamicFriction?: string[];
+    pastLifeStory?: string[];
+    soulPurpose?: string[];
+    vibeAnalysis?: string[];
+    attractionTriggers?: string[];
+    forecastDetails?: string[];
+    actionableAdvice?: string[];
     [key: string]: any;
 }
 
@@ -30,117 +42,232 @@ interface ReportData {
 
 export default function ReportView({ reportData, mock }: { reportData: ReportData, mock: boolean }) {
     useEffect(() => {
-        document.body.classList.add('print-report-ready');
-        return () => document.body.classList.remove('print-report-ready');
+        document.body.classList.add('bg-[#0A0A0A]', 'text-white');
+        return () => document.body.classList.remove('bg-[#0A0A0A]', 'text-white');
     }, []);
 
     const content = reportData.content || {};
 
-    // Helper to render multiple paragraphs safely
-    const renderParagraphs = (paras: any) => {
-        if (!paras || !Array.isArray(paras)) return null;
-        return paras.map((p, i) => (
-            <p key={i} className="text-slate-300 leading-relaxed text-lg mb-4 print:text-slate-700">{p}</p>
-        ));
+    // Helper to extract all text paragraphs from a chapter's array properties
+    const extractAllParagraphs = (chapterData: any): string[] => {
+        if (!chapterData) return [];
+        let allParas: string[] = [];
+
+        // If there's a direct paragraphs array (like Introduction/Conclusion)
+        if (chapterData.paragraphs && Array.isArray(chapterData.paragraphs)) {
+            allParas = [...allParas, ...chapterData.paragraphs];
+        }
+
+        // Extract from specific known keys in order
+        const keysToExtract = [
+            'userEnergy', 'idolEnergy', 'magneticIntersection',
+            'nurturingCycle', 'dynamicFriction',
+            'pastLifeStory', 'soulPurpose',
+            'vibeAnalysis', 'attractionTriggers',
+            'forecastDetails', 'actionableAdvice'
+        ];
+
+        keysToExtract.forEach(key => {
+            if (chapterData[key] && Array.isArray(chapterData[key])) {
+                allParas = [...allParas, ...chapterData[key]];
+            }
+        });
+
+        return allParas;
     };
 
-    // Helper to render an entire chapter
-    const renderChapter = (chapterKey: string, chapterData: any, icon: string) => {
+    // Card Placeholder Component
+    const InsightCard = ({ label, title, icon }: { label: string, title: string, icon: string }) => (
+        <div className="my-16 flex justify-center w-full print:hidden">
+            <div className="w-[280px] h-[360px] rounded-3xl border border-[#D4AF37]/20 bg-gradient-to-b from-[#111111] to-[#0A0A0A] flex flex-col items-center justify-center p-8 shadow-[0_10px_40px_rgba(0,0,0,0.5)] relative overflow-hidden group">
+                <div className="absolute inset-0 bg-[#D4AF37]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+
+                <div className="w-16 h-16 rounded-full bg-[#D4AF37]/10 flex items-center justify-center mb-6">
+                    <span className="material-symbols-outlined text-[#D4AF37] text-3xl">{icon}</span>
+                </div>
+
+                <div className="text-[#D4AF37] text-[10px] tracking-[0.2em] uppercase font-semibold mb-3">
+                    {label}
+                </div>
+
+                <h3 className="text-white font-serif text-lg text-center leading-snug">
+                    {title}
+                </h3>
+
+                <div className="mt-8 text-[#D4AF37]/50 text-xs tracking-widest">
+                    ...
+                </div>
+            </div>
+        </div>
+    );
+
+    const renderChapter = (chapterNum: string, chapterData: any) => {
         if (!chapterData) return null;
+
+        const paras = extractAllParagraphs(chapterData);
+        // We will insert the pull quote after the 1st or 2nd paragraph if it exists
+        const splitIndex = paras.length > 2 ? 2 : 1;
+
+        const firstHalf = paras.slice(0, splitIndex);
+        const secondHalf = paras.slice(splitIndex);
+
         return (
-            <section className="mb-16 glass-panel p-8 rounded-3xl border border-white/10 print:border-slate-800 print:bg-white print:text-black print:break-inside-avoid shadow-xl">
-                <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary print:bg-slate-200 print:text-slate-800">
-                        <span className="material-symbols-outlined">{icon}</span>
-                    </div>
-                    <h2 className="text-2xl font-serif text-white print:text-black">
-                        {chapterData.title || chapterKey}
+            <div className="mb-24 relative max-w-xl mx-auto px-6">
+                <div className="mb-8 border-b border-white/10 pb-6">
+                    <p className="text-[#D4AF37] text-[10px] tracking-[0.2em] uppercase font-bold mb-3">
+                        CHAPTER {chapterNum}
+                    </p>
+                    <h2 className="text-3xl font-serif text-white tracking-wide">
+                        {chapterData.title ? chapterData.title.replace(/^Chapter \d+: /, '') : ''}
                     </h2>
                 </div>
 
+                <div className="space-y-6 text-[#E0E0E0] text-[15px] leading-[1.9] tracking-wide font-light">
+                    {firstHalf.map((p, i) => (
+                        <p key={`p1-${i}`}>{p}</p>
+                    ))}
+                </div>
+
                 {chapterData.pullQuote && (
-                    <div className="mb-8 mt-2 pl-6 border-l-2 border-primary/50 text-primary italic text-xl font-serif tracking-wide leading-relaxed print:text-slate-600 print:border-slate-300">
-                        "{chapterData.pullQuote}"
+                    <div className="my-14 border-l-0 text-center px-4">
+                        <p className="text-[#D4AF37] italic text-2xl md:text-3xl font-serif tracking-wide leading-relaxed">
+                            "{chapterData.pullQuote}"
+                        </p>
                     </div>
                 )}
 
-                {/* Dynamically render all array-based paragraphs within the chapter object */}
-                {Object.keys(chapterData).map(key => {
-                    if (key === 'title') return null;
-                    const val = chapterData[key];
-                    if (Array.isArray(val)) {
-                        return (
-                            <div key={key} className="mt-6">
-                                <h3 className="text-sm text-primary uppercase tracking-widest mb-3 font-semibold print:text-slate-500">
-                                    {key.replace(/([A-Z])/g, ' $1').trim()}
-                                </h3>
-                                {renderParagraphs(val)}
-                            </div>
-                        );
-                    }
-                    return null;
-                })}
-            </section>
+                <div className="space-y-6 text-[#E0E0E0] text-[15px] leading-[1.9] tracking-wide font-light">
+                    {secondHalf.map((p, i) => (
+                        <p key={`p2-${i}`}>{p}</p>
+                    ))}
+                </div>
+            </div>
         );
     };
 
     return (
-        <div className="min-h-screen bg-onyx text-white relative font-sans">
-            <div className="fixed inset-0 print:hidden opacity-30 pointer-events-none z-0">
-                <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
-                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-900/20 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/3"></div>
-            </div>
-
-            <nav className="fixed top-0 w-full p-4 z-50 flex justify-between items-center bg-onyx/80 backdrop-blur-md border-b border-white/5 print:hidden">
-                <Link href="/" className="font-serif text-xl tracking-wider text-primary flex items-center gap-2">
-                    BIAS<span className="text-white">MATRIX</span>
+        <div className="min-h-screen bg-[#0A0A0A] text-white font-sans selection:bg-[#D4AF37]/30 pb-24">
+            {/* Top Navigation Bar */}
+            <nav className="fixed top-0 w-full h-16 z-50 flex justify-between items-center px-6 bg-[#0A0A0A]/90 backdrop-blur-md border-b border-white/5 print:hidden">
+                <Link href="/" className="text-[#D4AF37] hover:text-white transition-colors">
+                    <span className="material-symbols-outlined text-xl">arrow_back_ios_new</span>
                 </Link>
+                <div className="font-serif text-sm tracking-[0.3em] text-[#D4AF37] uppercase">
+                    BiasMatrix
+                </div>
+                <button onClick={() => window.print()} className="text-[#D4AF37] hover:text-white transition-colors">
+                    <span className="material-symbols-outlined text-xl">ios_share</span>
+                </button>
             </nav>
 
             {mock && (
-                <div className="pt-24 print:hidden px-6">
-                    <div className="bg-yellow-500/20 border border-yellow-500/50 text-yellow-200 text-xs px-4 py-2 rounded-lg text-center font-mono">
+                <div className="pt-24 print:hidden px-6 max-w-xl mx-auto">
+                    <div className="bg-yellow-500/10 border border-yellow-500/30 text-yellow-200 text-xs px-4 py-3 rounded-lg text-center font-mono">
                         Preview Mode: Showing sample/fallback report.
                     </div>
                 </div>
             )}
 
-            <main className="relative z-10 max-w-4xl mx-auto pt-24 pb-20 px-6 print:pt-0 print:px-0 print:mx-0">
-                <header className="text-center mb-16 print:mb-8 pt-8">
-                    <p className="text-primary tracking-[0.3em] text-sm font-semibold uppercase mb-4">VVIP DESTINY RECORD</p>
-                    <h1 className="text-4xl md:text-6xl font-serif text-white mb-6 leading-tight">
-                        {content.reportTitle || `The Destiny Tie: ${reportData.userName} & ${reportData.idolName}`}
+            <main className="relative z-10 w-full pt-32 print:pt-0">
+                {/* Main Header Area */}
+                <header className="text-center mb-16 max-w-xl mx-auto px-6">
+                    <div className="inline-block border border-[#D4AF37]/30 rounded-full px-4 py-1.5 mb-8">
+                        <p className="text-[#D4AF37] tracking-[0.2em] text-[9px] font-bold uppercase">
+                            DEEP ANALYSIS REPORT
+                        </p>
+                    </div>
+
+                    <h1 className="text-4xl md:text-5xl font-serif text-white mb-8 leading-tight tracking-wide">
+                        {content.reportTitle ? content.reportTitle.replace('The Cosmic Destiny Matrix: ', '') : `The Origin of Core Destiny`}
                     </h1>
 
-                    <div className="inline-flex flex-col items-center justify-center p-8 bg-surface/50 border border-white/10 rounded-full w-48 h-48 mt-8 shadow-[0_0_50px_rgba(212,175,55,0.1)] print:border-slate-800 print:shadow-none mx-auto relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent mix-blend-overlay"></div>
-                        <p className="text-xs text-slate-400 uppercase tracking-widest relative z-10 mb-1">Synergy</p>
-                        <p className="text-6xl font-serif text-primary italic relative z-10 leading-none">{reportData.score}</p>
-                        <p className="text-sm text-slate-500 relative z-10 mt-1">/100</p>
+                    <div className="w-16 h-[1px] bg-[#D4AF37] mx-auto opacity-50 mb-12"></div>
+
+                    {/* Hero Image Placeholder matching the UI reference */}
+                    <div className="w-full h-48 md:h-64 rounded-2xl overflow-hidden relative shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5">
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent z-10"></div>
+                        <img
+                            src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=2094&auto=format&fit=crop"
+                            alt="Cosmic Nebula"
+                            className="w-full h-full object-cover opacity-80 mix-blend-screen"
+                            crossOrigin="anonymous"
+                        />
                     </div>
                 </header>
 
+                {/* Introduction */}
                 {content.introduction && (
-                    <section className="mb-16 text-center max-w-2xl mx-auto">
-                        <span className="material-symbols-outlined text-4xl text-primary/50 mb-4 block">star_rate</span>
-                        <h2 className="text-2xl font-serif text-white mb-6">{content.introduction.title}</h2>
-                        {renderParagraphs(content.introduction.paragraphs)}
-                    </section>
+                    <div className="mb-24 max-w-xl mx-auto px-6">
+                        <div className="space-y-6 text-[#E0E0E0] text-[15px] leading-[1.9] tracking-wide font-light">
+                            {content.introduction.paragraphs?.map((p, i) => (
+                                <p key={i}>{p}</p>
+                            ))}
+                        </div>
+                    </div>
                 )}
 
-                {renderChapter("chapter1_CoreSouls", content.chapter1_CoreSouls, "psychology")}
-                {renderChapter("chapter2_ElementalMatrix", content.chapter2_ElementalMatrix, "cyclone")}
-                {renderChapter("chapter3_TwinFlame", content.chapter3_TwinFlame, "local_fire_department")}
-                {renderChapter("chapter4_Intimacy", content.chapter4_Intimacy, "favorite")}
-                {renderChapter("chapter5_DestinyTimeline", content.chapter5_DestinyTimeline, "hourglass_top")}
+                {/* Chapters with Interleaved Cards */}
+                {renderChapter("01", content.chapter1_CoreSouls)}
 
+                <InsightCard
+                    label="TAROT INSIGHT"
+                    title="Energy Card Unlocking..."
+                    icon="auto_awesome"
+                />
+
+                {renderChapter("02", content.chapter2_ElementalMatrix)}
+
+                <InsightCard
+                    label="KARMIC ECHO"
+                    title="Past Life Fragments..."
+                    icon="hourglass_empty"
+                />
+
+                {renderChapter("03", content.chapter3_TwinFlame)}
+                {renderChapter("04", content.chapter4_Intimacy)}
+
+                <InsightCard
+                    label="FINAL ORACLE"
+                    title="Mapping Your Path..."
+                    icon="explore"
+                />
+
+                {renderChapter("05", content.chapter5_DestinyTimeline)}
+
+                {/* Conclusion */}
                 {content.conclusion && (
-                    <section className="mt-24 mb-16 text-center max-w-2xl mx-auto border-t border-white/10 pt-16">
-                        <h2 className="text-3xl font-serif text-primary mb-6">{content.conclusion.title}</h2>
-                        {renderParagraphs(content.conclusion.paragraphs)}
+                    <section className="mt-32 mb-32 max-w-xl mx-auto px-6 text-center border-t border-[#D4AF37]/20 pt-16">
+                        <span className="material-symbols-outlined text-[#D4AF37] text-4xl mb-6">wb_incandescent</span>
+                        <h2 className="text-3xl font-serif text-white mb-8 tracking-wide">{content.conclusion.title || 'The Final Oracle'}</h2>
+                        <div className="space-y-6 text-[#E0E0E0] text-[15px] leading-[1.9] tracking-wide font-light">
+                            {content.conclusion.paragraphs?.map((p, i) => (
+                                <p key={i} className={i === content.conclusion!.paragraphs!.length - 1 ? "text-[#D4AF37] italic text-xl mt-12 font-serif" : ""}>
+                                    {p}
+                                </p>
+                            ))}
+                        </div>
                     </section>
                 )}
             </main>
+
+            {/* Bottom Floating Action Bar */}
+            <div className="fixed bottom-0 w-full bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A] to-transparent pt-12 pb-6 px-8 z-50 print:hidden">
+                <div className="max-w-md mx-auto flex justify-between items-center text-[#D4AF37]">
+                    <Link href="/" className="p-2 hover:bg-white/5 rounded-full transition-colors">
+                        <span className="material-symbols-outlined text-2xl">home</span>
+                    </Link>
+                    <button className="p-2 hover:bg-white/5 rounded-full transition-colors relative">
+                        <span className="material-symbols-outlined text-2xl">menu_book</span>
+                        <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                    <button className="p-2 hover:bg-white/5 rounded-full transition-colors">
+                        <span className="material-symbols-outlined text-2xl">auto_fix_high</span>
+                    </button>
+                    <button onClick={() => window.print()} className="p-2 hover:bg-white/5 rounded-full transition-colors">
+                        <span className="material-symbols-outlined text-2xl">download</span>
+                    </button>
+                </div>
+            </div>
         </div>
     );
 }
