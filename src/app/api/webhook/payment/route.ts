@@ -35,9 +35,17 @@ export async function POST(request: Request) {
             await supabase.from('reports').update({ is_paid: true }).eq('id', reportId);
 
             // 2. Fetch User & Idol data
-            const { data: report } = await supabase.from('reports').select('*, users(*), idols(*)').eq('id', reportId).single();
+            const { data: report, error: reportDataError } = await supabase.from('reports').select('*, users(*), idols(*)').eq('id', reportId).single();
+
+            console.log("DEBUG: Webhook reportId received:", reportId);
+            console.log("DEBUG: Supabase fetch error:", reportDataError);
+            console.log("DEBUG: report exist?", !!report);
+            console.log("DEBUG: report.users exist?", !!(report && report.users));
+            console.log("DEBUG: report.idols exist?", !!(report && report.idols));
 
             if (report && report.users && report.idols) {
+                console.log("DEBUG: Entering Gemini Generation Block...");
+
                 // 3. Generate Massive 15-Page Gemini Report
                 const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash', generationConfig: { responseMimeType: "application/json" } });
                 const prompt = `# Role & Persona
