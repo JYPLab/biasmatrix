@@ -113,7 +113,8 @@ Generate a massive, deeply detailed destiny report analyzing the cosmic compatib
                 }).eq('id', reportId);
 
                 // 5. Send Email via Resend in Persona
-                const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+                const vercelUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+                const appUrl = process.env.NEXT_PUBLIC_APP_URL || (vercelUrl ? `https://${vercelUrl}` : 'http://localhost:3000');
                 const magicLink = `${appUrl}/report/${reportId}`;
                 const { data: emailData, error: emailError } = await resend.emails.send({
                     from: 'BiasMatrix Oracle <onboarding@resend.dev>',
