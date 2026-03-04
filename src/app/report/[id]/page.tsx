@@ -45,11 +45,13 @@ export default async function ReportPage(props: { params: Promise<{ id: string }
 
     // Parse the detailed content from the AI output (stored as JSON)
     let content: Record<string, unknown> = {};
-    if (report.detailed_content) {
+    const rawContent = report.full_report_json || report.detailed_content;
+
+    if (rawContent) {
         try {
-            content = typeof report.detailed_content === 'string'
-                ? JSON.parse(report.detailed_content)
-                : report.detailed_content;
+            content = typeof rawContent === 'string'
+                ? JSON.parse(rawContent)
+                : rawContent;
         } catch (e) {
             console.error('Failed to parse report content', e);
         }
