@@ -7,6 +7,8 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 const resend = new Resend(process.env.RESEND_API_KEY || process.env.NEXT_PUBLIC_RESEND_API_KEY || 're_placeholder_key_so_next_build_wont_crash');
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || 'placeholder_gemini_key_for_build');
 
+export const maxDuration = 60; // Max allowed serverless timeout for Vercel Hobby
+
 export async function POST(request: Request) {
     try {
         const rawBody = await request.text();
