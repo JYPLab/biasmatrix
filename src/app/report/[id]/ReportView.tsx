@@ -43,12 +43,6 @@ export default function ReportView({ reportData, mock }: { reportData: ReportDat
                 <Link href="/" className="font-serif text-xl tracking-wider text-primary flex items-center gap-2">
                     BIAS<span className="text-white">MATRIX</span>
                 </Link>
-                <button
-                    onClick={handlePrint}
-                    className="bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-full text-sm font-semibold hover:bg-primary/20 transition-colors flex items-center gap-2"
-                >
-                    <span className="material-symbols-outlined text-sm">download</span> Save as PDF
-                </button>
             </nav>
 
             {mock && (
