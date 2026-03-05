@@ -10,7 +10,7 @@ export async function POST(request: Request) {
         const { email, nickname, birth_date, birth_city, longitude, is_time_known, birth_time, idol_id } = data;
 
         // 1. Calculate True Solar Time Offset (Longitude - 135) * 4 minutes
-        let adjustedTime = birth_time;
+        // let adjustedTime = birth_time;
         if (is_time_known && longitude && birth_time) {
             const offsetMinutes = (longitude - 135) * 4;
             // Actual parsing of birth_time and adding offsetMinutes would go here for exact calculation
@@ -22,9 +22,9 @@ export async function POST(request: Request) {
         // const elements = saju.getFiveElements();
 
         // 3. Save User to DB
-        const { data: user, error: userError } = await supabase.from('users').upsert({
+        const { data: user, error: userError } = await supabase.from('users').insert({
             email, nickname, birth_date, birth_city, longitude, is_time_known, birth_time
-        }, { onConflict: 'email' }).select().single();
+        }).select().single();
 
         if (userError) throw userError;
 
@@ -34,7 +34,13 @@ export async function POST(request: Request) {
 
         // 4. Generate Freemium metadata dynamically using Gemini 2.5 Flash Lite
         let score = 88;
-        let pentagonStats = { communication: 90, passion: 85, empathy: 88, destiny: 95, growth: 82 };
+        let pentagonStats: { element: string, value: number, icon: string }[] = [
+            { element: 'Fire', value: 90, icon: 'local_fire_department' },
+            { element: 'Earth', value: 70, icon: 'diamond' },
+            { element: 'Metal', value: 50, icon: 'token' },
+            { element: 'Water', value: 40, icon: 'water_drop' },
+            { element: 'Wood', value: 85, icon: 'auto_awesome' }
+        ];
         let insight = `The cosmic synergy between you and your bias shows a profound resonant frequency in the realm of passion. Your charts suggest a karmic connection that transcends ordinary interactions.`;
         let connectionType = 'KARMIC SPARK';
 
@@ -51,19 +57,19 @@ Analyze the elemental compatibility (Korean Saju) between the User and their Bia
 2. **Positive Reframing (Crucial):** If their elements clash (e.g., Water putting out Fire), NEVER frame it as a bad match. Reframe it as a "Karmic Spark," a "Dynamic friction that breaks boundaries," or "A profound tension meant for spiritual evolution."
 3. **The Hook Vibe:** The \`teaserText\` must read like the breathtaking opening lines of a cosmic romance novel. It must be intensely romantic, mysterious, and deeply personal (e.g., "Your spirits whisper across galaxies, a cosmic melody woven from stardust...").
 4. **JSON Output ONLY:** You must return the output strictly as a valid JSON object. Do not wrap it in markdown code blocks (like \`\`\`json).
-5. **VIRAL SCORING SYSTEM (CRUCIAL):** When generating the \`score\` and individual \`elementsData\` values (Wood, Fire, Earth, Metal, Water), the numbers MUST NEVER fall below 60. Generate all scores strictly between 65 and 99. This ensures the user feels a highly positive, "destined" connection, motivating them to screenshot and share the results on social media. (e.g., Even if elements clash, score it as 78 for "Transformative Friction", not 30).
+5. **VIRAL SCORING SYSTEM (CRUCIAL):** When generating the \`score\` and individual \`elementsData\` values (Wood, Fire, Earth, Metal, Water), the numbers MUST NEVER fall below 50. Generate all scores strictly between 50 and 99. Even if the score is in the 50s, reframe the result to explain that it represents the most dramatic, hard-fought karmic destiny rather than a "bad" match. (e.g., Even if elements clash, score it as 52 for "Transformative Friction" and not lower).
 
 # Expected JSON Output Schema
 {
-  "score": <Integer between 65 and 99. Even challenging charts should score reasonably high to maintain the fantasy, representing the 'depth' of the karma>,
+  "score": <Integer between 50 and 99. Even challenging charts should score reasonably to maintain the fantasy, representing the 'depth' of the karma>,
   "keyword": "<A 2-3 word UPPERCASE phrase defining their cosmic bond. e.g., 'DESTINED ECHO', 'KARMIC SPARK', 'CELESTIAL ANCHOR'>",
   "teaserText": "<A 2-3 sentence poetic, emotional hook explaining how their specific elements interact. Max 300 characters.>",
   "elementsData": [
-    { "element": "Fire", "value": <Integer 65-99>, "icon": "local_fire_department" },
-    { "element": "Earth", "value": <Integer 65-99>, "icon": "diamond" },
-    { "element": "Metal", "value": <Integer 65-99>, "icon": "token" },
-    { "element": "Water", "value": <Integer 65-99>, "icon": "water_drop" },
-    { "element": "Wood", "value": <Integer 65-99>, "icon": "auto_awesome" }
+    { "element": "Fire", "value": <Integer 50-99>, "icon": "local_fire_department" },
+    { "element": "Earth", "value": <Integer 50-99>, "icon": "diamond" },
+    { "element": "Metal", "value": <Integer 50-99>, "icon": "token" },
+    { "element": "Water", "value": <Integer 50-99>, "icon": "water_drop" },
+    { "element": "Wood", "value": <Integer 50-99>, "icon": "auto_awesome" }
   ]
 }
 
@@ -109,6 +115,7 @@ Analyze the elemental compatibility (Korean Saju) between the User and their Bia
         });
 
     } catch (error: any) {
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+        console.error("Backend Error:", error);
+        return NextResponse.json({ success: false, error: error.message || JSON.stringify(error) }, { status: 500 });
     }
 }

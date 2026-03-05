@@ -25,7 +25,8 @@ interface TeaserData {
 
 export default function Home() {
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [stickyEmail, setStickyEmail] = useState('');
+  const [isSending, setIsSending] = useState(false);
   const [month, setMonth] = useState('');
   const [day, setDay] = useState('');
   const [year, setYear] = useState('');
@@ -117,8 +118,45 @@ export default function Home() {
     setShowDropdown(false);
   };
 
+  const handleSendReport = async () => {
+    if (!stickyEmail) {
+      alert("Please enter your email address.");
+      return;
+    }
+    if (!reportId) {
+      alert("Please submit your Celestial Profile first by clicking 'Discover My Synergy'.");
+      return;
+    }
+    setIsSending(true);
+    try {
+      // Update the user's email first
+      const { data: report } = await supabase.from('reports').select('user_id').eq('id', reportId).single();
+      if (report?.user_id) {
+        await supabase.from('users').update({ email: stickyEmail }).eq('id', report.user_id);
+      }
+      const res = await axios.post('/api/webhook/payment', {
+        meta: {
+          event_name: 'order_created',
+          custom_data: { report_id: reportId }
+        }
+      }, {
+        headers: { 'x-mock-bypass': 'true' }
+      });
+      if (res.data.success) {
+        alert("✨ Your cosmic report is on its way! Please check your email inbox for the private link.");
+      } else {
+        alert("Something went wrong: " + res.data.error);
+      }
+    } catch (err) {
+      console.error("Send report error:", err);
+      alert("Error sending report. Please try again.");
+    } finally {
+      setIsSending(false);
+    }
+  };
+
   const handleAnalyze = async () => {
-    if (!name || !email || !month || !day || !year || !selectedCity) {
+    if (!name || !month || !day || !year || !selectedCity) {
       alert("Please fill all required fields and select a valid city from the dropdown");
       return;
     }
@@ -126,7 +164,7 @@ export default function Home() {
     setIsLoading(true);
     try {
       const payload = {
-        email,
+        email: stickyEmail || `pending_${Date.now()}@biasmatrix.com`,
         nickname: name,
         birth_date: `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`,
         birth_city: String(selectedCity.display_name || ''),
@@ -249,13 +287,7 @@ export default function Home() {
                   placeholder="What should we call you?" type="text"
                 />
               </div>
-              <div>
-                <input
-                  value={email} onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-slate-600 outline-none"
-                  placeholder="Where should we email your report? 💌" type="email"
-                />
-              </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <div className="flex gap-2">
                   <select value={month} onChange={(e) => setMonth(e.target.value)} className="flex-1 bg-surface/50 border border-white/10 rounded-xl px-2 py-3.5 text-white text-sm focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none appearance-none text-center">
@@ -451,50 +483,28 @@ export default function Home() {
       </main>
 
       {/* STICKY CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-gradient-to-t from-onyx via-onyx to-transparent pt-12">
+      <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-gradient-to-t from-onyx via-onyx to-transparent pt-10">
         <div className="max-w-md mx-auto">
           <div className="w-full bg-gradient-to-r from-primary-light via-primary to-yellow-600 rounded-xl p-[1px] shadow-[0_0_30px_rgba(212,175,55,0.2)]">
-            <button
-              onClick={() => {
-                if (!reportId) {
-                  alert("Please submit your Celestial Profile first to unlock the report.");
-                  return;
-                }
-                const handleMockCheckout = async () => {
-                  try {
-                    alert("Initiating Mock E2E Trigger. Generating massive 15-page report (takes 10-20s) and sending email...");
-                    const res = await axios.post('/api/webhook/payment', {
-                      meta: {
-                        event_name: 'order_created',
-                        custom_data: { report_id: reportId }
-                      }
-                    }, {
-                      headers: { 'x-mock-bypass': 'true' }
-                    });
-                    if (res.data.success) {
-                      alert("Success! The AI magic is done. Please check your email inbox for the private link.");
-                    } else {
-                      alert("Mock webhook failed: " + res.data.error);
-                    }
-                  } catch (err) {
-                    console.error("Mock Checkout error:", err);
-                    alert("Error triggering mock webhook. Check console.");
-                  }
-                };
-                handleMockCheckout();
-              }}
-              className="w-full bg-onyx rounded-[11px] px-4 py-3 flex items-center justify-between relative overflow-hidden group"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-50 group-hover:opacity-70 transition-opacity"></div>
-              <div className="relative z-10 text-left">
-                <p className="text-white font-serif font-bold text-sm tracking-wide">Unlock 15-Page Deep Insight</p>
-                <p className="text-[10px] text-primary-light uppercase tracking-wider font-medium">One-time payment</p>
-              </div>
-              <div className="relative z-10 bg-white text-onyx px-4 py-1.5 rounded-lg font-bold text-sm group-hover:bg-slate-100 transition-colors flex items-center gap-1 shadow-lg ml-2 whitespace-nowrap">
-                $14.99 <span className="text-lg leading-none mb-0.5">➔</span>
-              </div>
-            </button>
+            <div className="w-full bg-onyx rounded-[11px] px-3 py-2.5 flex items-center gap-2 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-50"></div>
+              <input
+                type="email"
+                value={stickyEmail}
+                onChange={(e) => setStickyEmail(e.target.value)}
+                placeholder="Your email"
+                className="relative z-10 flex-1 min-w-0 bg-transparent text-white text-sm placeholder:text-slate-500 outline-none border-none focus:ring-0"
+              />
+              <button
+                onClick={handleSendReport}
+                disabled={isSending}
+                className="relative z-10 bg-gradient-to-r from-primary-light to-primary text-onyx font-bold text-sm px-4 py-2 rounded-lg whitespace-nowrap hover:opacity-90 transition-opacity disabled:opacity-50 flex-shrink-0"
+              >
+                {isSending ? 'Sending...' : 'Send ✨'}
+              </button>
+            </div>
           </div>
+          <p className="text-center text-[10px] text-slate-500 mt-1.5">Get your full report for free</p>
         </div>
       </div>
     </>

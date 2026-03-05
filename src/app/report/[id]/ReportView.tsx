@@ -18,7 +18,7 @@ interface SubSection {
     attractionTriggers?: string[];
     forecastDetails?: string[];
     actionableAdvice?: string[];
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 interface MassiveReport {
@@ -30,7 +30,7 @@ interface MassiveReport {
     chapter4_Intimacy?: SubSection;
     chapter5_DestinyTimeline?: SubSection;
     conclusion?: SubSection;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 interface ReportData {
@@ -39,6 +39,31 @@ interface ReportData {
     score: number;
     content: MassiveReport;
 }
+
+// Card Placeholder Component
+const InsightCard = ({ label, title, icon }: { label: string, title: string, icon: string }) => (
+    <div className="my-16 flex justify-center w-full print:hidden">
+        <div className="w-[280px] h-[360px] rounded-3xl border border-[#D4AF37]/20 bg-gradient-to-b from-[#111111] to-[#0A0A0A] flex flex-col items-center justify-center p-8 shadow-[0_10px_40px_rgba(0,0,0,0.5)] relative overflow-hidden group">
+            <div className="absolute inset-0 bg-[#D4AF37]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+
+            <div className="w-16 h-16 rounded-full bg-[#D4AF37]/10 flex items-center justify-center mb-6">
+                <span className="material-symbols-outlined text-[#D4AF37] text-3xl">{icon}</span>
+            </div>
+
+            <div className="text-[#D4AF37] text-[10px] tracking-[0.2em] uppercase font-semibold mb-3">
+                {label}
+            </div>
+
+            <h3 className="text-white font-serif text-lg text-center leading-snug">
+                {title}
+            </h3>
+
+            <div className="mt-8 text-[#D4AF37]/50 text-xs tracking-widest">
+                ...
+            </div>
+        </div>
+    </div>
+);
 
 export default function ReportView({ reportData, mock }: { reportData: ReportData, mock: boolean }) {
     useEffect(() => {
@@ -49,7 +74,7 @@ export default function ReportView({ reportData, mock }: { reportData: ReportDat
     const content = reportData.content || {};
 
     // Helper to extract all text paragraphs from a chapter's array properties
-    const extractAllParagraphs = (chapterData: any): string[] => {
+    const extractAllParagraphs = (chapterData: SubSection): string[] => {
         if (!chapterData) return [];
         let allParas: string[] = [];
 
@@ -69,39 +94,14 @@ export default function ReportView({ reportData, mock }: { reportData: ReportDat
 
         keysToExtract.forEach(key => {
             if (chapterData[key] && Array.isArray(chapterData[key])) {
-                allParas = [...allParas, ...chapterData[key]];
+                allParas = [...allParas, ...(chapterData[key] as string[])];
             }
         });
 
         return allParas;
     };
 
-    // Card Placeholder Component
-    const InsightCard = ({ label, title, icon }: { label: string, title: string, icon: string }) => (
-        <div className="my-16 flex justify-center w-full print:hidden">
-            <div className="w-[280px] h-[360px] rounded-3xl border border-[#D4AF37]/20 bg-gradient-to-b from-[#111111] to-[#0A0A0A] flex flex-col items-center justify-center p-8 shadow-[0_10px_40px_rgba(0,0,0,0.5)] relative overflow-hidden group">
-                <div className="absolute inset-0 bg-[#D4AF37]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-
-                <div className="w-16 h-16 rounded-full bg-[#D4AF37]/10 flex items-center justify-center mb-6">
-                    <span className="material-symbols-outlined text-[#D4AF37] text-3xl">{icon}</span>
-                </div>
-
-                <div className="text-[#D4AF37] text-[10px] tracking-[0.2em] uppercase font-semibold mb-3">
-                    {label}
-                </div>
-
-                <h3 className="text-white font-serif text-lg text-center leading-snug">
-                    {title}
-                </h3>
-
-                <div className="mt-8 text-[#D4AF37]/50 text-xs tracking-widest">
-                    ...
-                </div>
-            </div>
-        </div>
-    );
-
-    const renderChapter = (chapterNum: string, chapterData: any) => {
+    const renderChapter = (chapterNum: string, chapterData: SubSection | undefined | null) => {
         if (!chapterData) return null;
 
         const paras = extractAllParagraphs(chapterData);
@@ -131,7 +131,7 @@ export default function ReportView({ reportData, mock }: { reportData: ReportDat
                 {chapterData.pullQuote && (
                     <div className="my-14 border-l-0 text-center px-4">
                         <p className="text-[#D4AF37] italic text-2xl md:text-3xl font-serif tracking-wide leading-relaxed">
-                            "{chapterData.pullQuote}"
+                            &quot;{chapterData.pullQuote as string}&quot;
                         </p>
                     </div>
                 )}
