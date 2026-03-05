@@ -22,7 +22,7 @@ export default function CosmicHarmonyTeaser({
     elementsData,
 }: CosmicHarmonyTeaserProps) {
     // SVG Setup
-    const size = 300;
+    const size = 340; // Increased size to add intrinsic padding for icons
     const center = size / 2;
     const maxRadius = 100;
 
@@ -60,22 +60,22 @@ export default function CosmicHarmonyTeaser({
     });
 
     return (
-        <div className="glass-panel rounded-2xl p-6 relative overflow-hidden bg-[#111111]">
-            <div className="flex items-center justify-between mb-8">
+        <div className="glass-panel w-full max-w-sm mx-auto rounded-2xl p-4 sm:p-6 relative overflow-hidden bg-[#111111]">
+            <div className="flex items-center justify-between mb-6 sm:mb-8">
                 <div>
-                    <h3 className="font-serif text-2xl text-white">Your Cosmic Harmony</h3>
-                    <p className="text-xs text-slate-400 mt-1">Based on 5 elemental pillars</p>
+                    <h3 className="font-serif text-xl sm:text-2xl text-white">Your Cosmic Harmony</h3>
+                    <p className="text-[10px] sm:text-xs text-slate-400 mt-1">Based on 5 elemental pillars</p>
                 </div>
                 <div className="text-right flex items-baseline gap-1">
-                    <span className="text-4xl font-serif text-[#E5C158] italic drop-shadow-[0_0_8px_rgba(229,193,88,0.4)]">
+                    <span className="text-3xl sm:text-4xl font-serif text-[#E5C158] italic drop-shadow-[0_0_8px_rgba(229,193,88,0.4)]">
                         {score}
                     </span>
-                    <span className="text-sm text-slate-500">/100</span>
+                    <span className="text-xs sm:text-sm text-slate-500">/100</span>
                 </div>
             </div>
 
-            <div className="relative w-full flex items-center justify-center mb-8">
-                <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="overflow-visible">
+            <div className="relative w-full flex items-center justify-center mb-6 sm:mb-8 px-2 sm:px-0">
+                <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-auto aspect-square overflow-visible">
                     {/* Background Grid */}
                     {backgroundPolygons.map((points, i) => (
                         <polygon
@@ -156,10 +156,10 @@ export default function CosmicHarmonyTeaser({
                 </svg>
             </div>
 
-            <div className="bg-[#18181B]/80 rounded-xl p-5 border border-white/5 relative overflow-hidden">
+            <div className="bg-[#18181B]/80 rounded-xl px-4 py-4 sm:p-5 border border-white/5 relative overflow-hidden">
                 {/* Subtle gold glow behind the text */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#E5C158]/5 to-transparent blur-xl"></div>
-                <p className="text-[15px] text-slate-300 leading-relaxed text-center font-serif relative z-10 text-pretty">
+                <p className="text-[14px] sm:text-[15px] text-slate-300 leading-relaxed text-center font-serif relative z-10 text-pretty">
                     {teaserText}
                 </p>
             </div>
