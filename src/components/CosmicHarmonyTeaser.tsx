@@ -74,8 +74,12 @@ export default function CosmicHarmonyTeaser({
                 </div>
             </div>
 
-            <div className="relative w-full flex items-center justify-center mb-6 sm:mb-8 px-2 sm:px-0">
-                <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-auto aspect-square overflow-visible">
+            <div className="relative w-full aspect-square flex items-center justify-center mb-6 sm:mb-8 px-2 sm:px-0">
+                <svg
+                    viewBox={`0 0 ${size} ${size}`}
+                    preserveAspectRatio="xMidYMid meet"
+                    className="absolute inset-0 w-full h-full overflow-visible"
+                >
                     {/* Background Grid */}
                     {backgroundPolygons.map((points, i) => (
                         <polygon
