@@ -10,37 +10,37 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || process.env.N
 export const maxDuration = 60; // Max allowed serverless timeout for Vercel Hobby
 
 export async function POST(request: Request) {
-    try {
-        const rawBody = await request.text();
-        const signature = request.headers.get('x-signature') || '';
-        const secret = process.env.LEMON_SQUEEZY_WEBHOOK_SECRET || '';
+  try {
+    const rawBody = await request.text();
+    const signature = request.headers.get('x-signature') || '';
+    const secret = process.env.LEMON_SQUEEZY_WEBHOOK_SECRET || '';
 
-        const hmac = crypto.createHmac('sha256', secret);
-        const digest = Buffer.from(hmac.update(rawBody).digest('hex'), 'utf8');
-        const signatureBuffer = Buffer.from(signature, 'utf8');
+    const hmac = crypto.createHmac('sha256', secret);
+    const digest = Buffer.from(hmac.update(rawBody).digest('hex'), 'utf8');
+    const signatureBuffer = Buffer.from(signature, 'utf8');
 
-        if (!request.headers.get('x-mock-bypass')) {
-            if (digest.length !== signatureBuffer.length || !crypto.timingSafeEqual(digest, signatureBuffer)) {
-                return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
-            }
-        }
+    if (!request.headers.get('x-mock-bypass')) {
+      if (digest.length !== signatureBuffer.length || !crypto.timingSafeEqual(digest, signatureBuffer)) {
+        return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
+      }
+    }
 
-        const data = JSON.parse(rawBody);
+    const data = JSON.parse(rawBody);
 
-        if (data.meta?.event_name === 'order_created' || request.headers.get('x-mock-bypass')) {
-            const customData = data.meta?.custom_data || data.custom_data;
-            const reportId = customData.report_id;
+    if (data.meta?.event_name === 'order_created' || request.headers.get('x-mock-bypass')) {
+      const customData = data.meta?.custom_data || data.custom_data;
+      const reportId = customData.report_id;
 
-            // 1. Update report as paid
-            await supabase.from('reports').update({ is_paid: true }).eq('id', reportId);
+      // 1. Update report as paid
+      await supabase.from('reports').update({ is_paid: true }).eq('id', reportId);
 
-            // 2. Fetch User & Idol data
-            const { data: report } = await supabase.from('reports').select('*, users(*), idols(*)').eq('id', reportId).single();
+      // 2. Fetch User & Idol data
+      const { data: report } = await supabase.from('reports').select('*, users(*), idols(*)').eq('id', reportId).single();
 
-            if (report && report.users && report.idols) {
-                // 3. Generate Massive 15-Page Gemini Report
-                const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash', generationConfig: { responseMimeType: "application/json" } });
-                const prompt = `# Role & Persona
+      if (report && report.users && report.idols) {
+        // 3. Generate Massive 15-Page Gemini Report
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash', generationConfig: { responseMimeType: "application/json" } });
+        const prompt = `# Role & Persona
 You are an elite, mystical astrologer and a poetic storyteller specializing in Eastern Saju (Four Pillars) combined with Western "Twin Flame" and "Karmic Destiny" concepts. Your audience is a sophisticated 20-something American female who deeply loves K-Pop. Your tone is enchanting, deeply empathetic, highly personalized, and reads like a premium cosmic romance novel.
 
 # Objective
@@ -52,10 +52,11 @@ Generate a massive, deeply detailed, and comprehensive destiny report analyzing 
 - Idol's Name: ${report.idols.group_name} ${report.idols.member_name}
 
 # Strict Guidelines
-1. **EXPANSIVE LENGTH (Crucial):** DO NOT summarize or write concisely. You must write in expansive, vivid detail, deeply exploring psychological traits, emotional nuances, and cosmic metaphors. Each array in the JSON represents multiple long, detailed paragraphs. Aim for depth and breadth.
+1. **EXPANSIVE LENGTH (Crucial):** DO NOT summarize or write concisely. You must write in expansive, vivid detail, deeply exploring psychological traits, emotional nuances, and cosmic metaphors. Each array in the JSON represents multiple long, detailed paragraphs (minimum 4-5 sentences per paragraph). Aim for extreme depth and breadth.
 2. **NO Academic Saju Jargon:** Translate all Korean Saju terms into mystical archetypes (e.g., "The Radiant Sun", "The Mystic River", "Karmic Spark"). Focus on the interaction of the 5 Elements (Wood, Fire, Earth, Metal, Water).
 3. **Positive Reframing:** NEVER say they are a "bad match" or use the word "incompatible." Reframe elemental clashes (e.g., Water and Fire) as "Dynamic friction for spiritual growth" or "Intense Karmic Sparks that break boundaries."
 4. **STRICT JSON OUTPUT:** You MUST output the result EXACTLY in the provided JSON schema. We have added a \`pullQuote\` field for each chapter—this must be a single, overwhelmingly romantic and poetic sentence that summarizes the chapter's vibe.
+5. **FREQUENT NAME PAIRING (Crucial for Virality):** You MUST frequently weave ${report.users.nickname} and ${report.idols.member_name} together throughout the text. Address the user directly by their name in almost every paragraph to make the report feel intimately personalized and highly "screenshot-worthy" for a K-Pop fan. (e.g., "${report.users.nickname}, your Metal energy perfectly complements ${report.idols.member_name}'s Wood..."). Never let a section go by without intimately addressing the user by name and pairing it with the idol's name.
 
 # Expected JSON Schema
 {
@@ -64,8 +65,8 @@ Generate a massive, deeply detailed, and comprehensive destiny report analyzing 
     "title": "The Cosmic Coordinates",
     "pullQuote": "<A single, breathtakingly romantic sentence about their souls meeting.>",
     "paragraphs": [
-      "<Deep, poetic opening about their souls meeting across time and space. Paragraph 1. Minimum 4 sentences.>",
-      "<Paragraph 2 summary of how their elemental energies intertwine. Minimum 4 sentences.>"
+      "<Deep, poetic opening about their souls meeting across time and space. Paragraph 1. Minimum 4-5 sentences.>",
+      "<Paragraph 2 summary of how their elemental energies intertwine. Minimum 4-5 sentences.>"
     ]
   },
   "chapter1_CoreSouls": {
@@ -144,24 +145,24 @@ Generate a massive, deeply detailed, and comprehensive destiny report analyzing 
   }
 }`;
 
-                const result = await model.generateContent(prompt);
-                const generatedJson = JSON.parse(result.response.text());
+        const result = await model.generateContent(prompt);
+        const generatedJson = JSON.parse(result.response.text());
 
-                // 4. Update Report with JSON result
-                await supabase.from('reports').update({
-                    full_report_json: generatedJson
-                }).eq('id', reportId);
+        // 4. Update Report with JSON result
+        await supabase.from('reports').update({
+          full_report_json: generatedJson
+        }).eq('id', reportId);
 
-                // 5. Send Email via Resend in Persona
-                const vercelUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
-                const appUrl = process.env.NEXT_PUBLIC_APP_URL || (vercelUrl ? `https://${vercelUrl}` : 'http://localhost:3000');
-                const magicLink = `${appUrl}/report/${reportId}`;
+        // 5. Send Email via Resend in Persona
+        const vercelUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL || (vercelUrl ? `https://${vercelUrl}` : 'http://localhost:3000');
+        const magicLink = `${appUrl}/report/${reportId}`;
 
-                const { data: emailData, error: emailError } = await resend.emails.send({
-                    from: 'BiasMatrix Oracle <onboarding@resend.dev>',
-                    to: report.users.email,
-                    subject: `The stars have spoken. Your Cosmic Harmony with ${report.idols.member_name} is ready. ✨`,
-                    html: `
+        const { data: emailData, error: emailError } = await resend.emails.send({
+          from: 'BiasMatrix Oracle <onboarding@resend.dev>',
+          to: report.users.email,
+          subject: `The stars have spoken. Your Cosmic Harmony with ${report.idols.member_name} is ready. ✨`,
+          html: `
                     <div style="font-family: serif; color: #111111; max-width: 600px; margin: 0 auto; padding: 40px 20px; text-align: center; background-color: #FAFAFA; border: 1px solid #EAEAEA; border-radius: 12px;">
                         <h1 style="color: #D4AF37; font-size: 24px; letter-spacing: 2px; text-transform: uppercase;">The Wait is Over, ${report.users.nickname}</h1>
                         <p style="font-size: 16px; line-height: 1.8; color: #4A4A4A; margin-top: 24px;">
@@ -177,17 +178,17 @@ Generate a massive, deeply detailed, and comprehensive destiny report analyzing 
                             The universe makes no mistakes.<br>BiasMatrix Premium Astrology
                         </p>
                     </div>`
-                });
+        });
 
-                if (emailError) {
-                    console.error("Resend API failed to send email:", emailError);
-                    return NextResponse.json({ success: false, error: "Email delivery failed", details: emailError }, { status: 500 });
-                }
-            }
+        if (emailError) {
+          console.error("Resend API failed to send email:", emailError);
+          return NextResponse.json({ success: false, error: "Email delivery failed", details: emailError }, { status: 500 });
         }
-
-        return NextResponse.json({ success: true });
-    } catch (error: any) {
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+      }
     }
+
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
 }
