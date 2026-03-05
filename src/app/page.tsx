@@ -479,7 +479,10 @@ export default function Home() {
               </button>
             </div>
           </div>
-          <p className="text-center text-xs text-slate-400 mt-2 tracking-wide">✦ Get your full report for free ✦</p>
+          <div className="flex items-center justify-center gap-2 mt-2">
+            <span className="bg-primary/20 border border-primary/40 text-primary-light text-xs font-bold px-3 py-0.5 rounded-full tracking-wide uppercase">🎁 100% Free</span>
+            <span className="text-slate-300 text-xs">— Get your full cosmic report</span>
+          </div>
         </div>
       </div>
     </>
