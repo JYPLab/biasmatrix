@@ -483,28 +483,29 @@ export default function Home() {
       </main>
 
       {/* STICKY CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-gradient-to-t from-onyx via-onyx to-transparent pt-10">
+      <div className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-5 pt-10 bg-gradient-to-t from-onyx via-onyx/95 to-transparent">
         <div className="max-w-md mx-auto">
-          <div className="w-full bg-gradient-to-r from-primary-light via-primary to-yellow-600 rounded-xl p-[1px] shadow-[0_0_30px_rgba(212,175,55,0.2)]">
-            <div className="w-full bg-onyx rounded-[11px] px-3 py-2.5 flex items-center gap-2 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-50"></div>
+          <div className="w-full bg-gradient-to-r from-primary-light via-primary to-yellow-600 rounded-2xl p-[1.5px] shadow-[0_0_40px_rgba(212,175,55,0.3)]">
+            <div className="w-full bg-[#141414] rounded-[14px] px-4 py-3 flex items-center gap-3 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/15 to-transparent"></div>
               <input
                 type="email"
                 value={stickyEmail}
                 onChange={(e) => setStickyEmail(e.target.value)}
-                placeholder="Your email"
-                className="relative z-10 flex-1 min-w-0 bg-transparent text-white text-sm placeholder:text-slate-500 outline-none border-none focus:ring-0"
+                placeholder="Your email address"
+                className="relative z-10 flex-1 min-w-0 bg-transparent text-white text-base placeholder:text-slate-400 outline-none border-none focus:ring-0"
               />
+              <div className="relative z-10 w-px h-6 bg-white/20 flex-shrink-0" />
               <button
                 onClick={handleSendReport}
                 disabled={isSending}
-                className="relative z-10 bg-gradient-to-r from-primary-light to-primary text-onyx font-bold text-sm px-4 py-2 rounded-lg whitespace-nowrap hover:opacity-90 transition-opacity disabled:opacity-50 flex-shrink-0"
+                className="relative z-10 bg-gradient-to-r from-primary-light to-primary text-onyx font-extrabold text-sm px-5 py-2.5 rounded-xl whitespace-nowrap hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 flex-shrink-0 shadow-md"
               >
-                {isSending ? 'Sending...' : 'Send ✨'}
+                {isSending ? 'Sending…' : 'Send ✨'}
               </button>
             </div>
           </div>
-          <p className="text-center text-[10px] text-slate-500 mt-1.5">Get your full report for free</p>
+          <p className="text-center text-xs text-slate-400 mt-2 tracking-wide">✦ Get your full report for free ✦</p>
         </div>
       </div>
     </>
