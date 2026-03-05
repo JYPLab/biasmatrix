@@ -30,8 +30,7 @@ export default function Home() {
   const [month, setMonth] = useState('');
   const [day, setDay] = useState('');
   const [year, setYear] = useState('');
-  const [birthTime, setBirthTime] = useState('');
-  const [isTimeUnknown, setIsTimeUnknown] = useState(false);
+
 
   // City search state
   const [citySearch, setCitySearch] = useState('');
@@ -169,8 +168,8 @@ export default function Home() {
         birth_date: `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`,
         birth_city: String(selectedCity.display_name || ''),
         longitude: parseFloat(String(selectedCity.lon || '0')),
-        is_time_known: !isTimeUnknown,
-        birth_time: isTimeUnknown ? null : birthTime,
+        is_time_known: false,
+        birth_time: null,
         idol_id: selectedMember,
       };
 
@@ -288,45 +287,25 @@ export default function Home() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div className="flex gap-2">
-                  <select value={month} onChange={(e) => setMonth(e.target.value)} className="flex-1 bg-surface/50 border border-white/10 rounded-xl px-2 py-3.5 text-white text-sm focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none appearance-none text-center">
-                    <option value="" disabled selected>MM</option>
-                    {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
-                      <option key={m} value={m}>{m.toString().padStart(2, '0')}</option>
-                    ))}
-                  </select>
-                  <select value={day} onChange={(e) => setDay(e.target.value)} className="flex-1 bg-surface/50 border border-white/10 rounded-xl px-2 py-3.5 text-white text-sm focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none appearance-none text-center">
-                    <option value="" disabled selected>DD</option>
-                    {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
-                      <option key={d} value={d}>{d.toString().padStart(2, '0')}</option>
-                    ))}
-                  </select>
-                  <select value={year} onChange={(e) => setYear(e.target.value)} className="flex-2 bg-surface/50 border border-white/10 rounded-xl px-2 py-3.5 text-white text-sm focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none appearance-none text-center">
-                    <option value="" disabled selected>YYYY</option>
-                    {Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - 14 - i).map(y => (
-                      <option key={y} value={y}>{y}</option>
-                    ))}
-                  </select>
-                </div>
-                <input
-                  value={birthTime} onChange={(e) => setBirthTime(e.target.value)} disabled={isTimeUnknown}
-                  className="w-full bg-surface/50 border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:border-primary focus:ring-1 focus:ring-primary transition-all [color-scheme:dark] placeholder:text-slate-600 outline-none disabled:opacity-50"
-                  type="time"
-                />
-              </div>
-              <div className="flex items-center gap-2 px-1">
-                <div className="relative flex items-center">
-                  <input
-                    checked={isTimeUnknown} onChange={(e) => setIsTimeUnknown(e.target.checked)}
-                    className="peer h-4 w-4 shrink-0 rounded-sm border border-white/20 bg-surface/50 text-primary focus:ring-1 focus:ring-primary focus:ring-offset-0 appearance-none outline-none checked:bg-primary"
-                    id="birth_time_unknown" type="checkbox"
-                  />
-                  <svg className="pointer-events-none absolute left-0 top-0 hidden h-4 w-4 text-onyx peer-checked:block" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4.5 12.75l6 6 9-13.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                  </svg>
-                </div>
-                <label className="text-xs text-slate-400 cursor-pointer select-none" htmlFor="birth_time_unknown">I don&apos;t know my exact birth time</label>
+              <div className="flex gap-2">
+                <select value={month} onChange={(e) => setMonth(e.target.value)} className="flex-1 bg-surface/50 border border-white/10 rounded-xl px-2 py-3.5 text-white text-sm focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none appearance-none text-center">
+                  <option value="" disabled selected>MM</option>
+                  {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
+                    <option key={m} value={m}>{m.toString().padStart(2, '0')}</option>
+                  ))}
+                </select>
+                <select value={day} onChange={(e) => setDay(e.target.value)} className="flex-1 bg-surface/50 border border-white/10 rounded-xl px-2 py-3.5 text-white text-sm focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none appearance-none text-center">
+                  <option value="" disabled selected>DD</option>
+                  {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
+                    <option key={d} value={d}>{d.toString().padStart(2, '0')}</option>
+                  ))}
+                </select>
+                <select value={year} onChange={(e) => setYear(e.target.value)} className="flex-2 bg-surface/50 border border-white/10 rounded-xl px-2 py-3.5 text-white text-sm focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none appearance-none text-center">
+                  <option value="" disabled selected>YYYY</option>
+                  {Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - 14 - i).map(y => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
               </div>
 
               <div className="relative">
