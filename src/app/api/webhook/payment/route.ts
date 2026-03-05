@@ -39,7 +39,7 @@ export async function POST(request: Request) {
 
       if (report && report.users && report.idols) {
         // 3. Generate Massive 15-Page Gemini Report
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-pro', generationConfig: { responseMimeType: "application/json" } });
+        const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview', generationConfig: { responseMimeType: "application/json" } });
         const prompt = `# Role & Persona
 You are an elite, mystical astrologer and a poetic storyteller specializing in Eastern Saju (Four Pillars) combined with Western "Twin Flame" and "Karmic Destiny" concepts. Your audience is a sophisticated 20-something American female who deeply loves K-Pop. Your tone is enchanting, deeply empathetic, highly personalized, and reads like a premium cosmic romance novel.
 
