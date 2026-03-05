@@ -30,12 +30,19 @@ export async function POST(request: Request) {
     if (data.meta?.event_name === 'order_created' || request.headers.get('x-mock-bypass')) {
       const customData = data.meta?.custom_data || data.custom_data;
       const reportId = customData.report_id;
+      const userEmail = customData.email; // 클라이언트에서 전달된 실제 이메일
 
       // 1. Update report as paid
       await supabase.from('reports').update({ is_paid: true }).eq('id', reportId);
 
       // 2. Fetch User & Idol data
       const { data: report } = await supabase.from('reports').select('*, users(*), idols(*)').eq('id', reportId).single();
+
+      // 2-1. 실제 이메일로 업데이트 (서버에서 처리 → RLS 우회)
+      if (userEmail && report?.users?.id) {
+        await supabase.from('users').update({ email: userEmail }).eq('id', report.users.id);
+        report.users.email = userEmail; // 이메일 발송 시 최신값 사용
+      }
 
       if (report && report.users && report.idols) {
         // 3. Generate Massive 15-Page Gemini Report

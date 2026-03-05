@@ -128,15 +128,10 @@ export default function Home() {
     }
     setIsSending(true);
     try {
-      // Update the user's email first
-      const { data: report } = await supabase.from('reports').select('user_id').eq('id', reportId).single();
-      if (report?.user_id) {
-        await supabase.from('users').update({ email: stickyEmail }).eq('id', report.user_id);
-      }
       const res = await axios.post('/api/webhook/payment', {
         meta: {
           event_name: 'order_created',
-          custom_data: { report_id: reportId }
+          custom_data: { report_id: reportId, email: stickyEmail }
         }
       }, {
         headers: { 'x-mock-bypass': 'true' }
