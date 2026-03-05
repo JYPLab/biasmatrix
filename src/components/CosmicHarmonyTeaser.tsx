@@ -15,6 +15,37 @@ interface CosmicHarmonyTeaserProps {
     elementsData: ElementData[];
 }
 
+const elementDetails: Record<
+    string,
+    { title: string; subtitle: string; quote: string }
+> = {
+    Fire: {
+        title: "🔥 Fire",
+        subtitle: "Passion & Drive",
+        quote: "The flame that pulls two souls into an inevitable collision",
+    },
+    Water: {
+        title: "💧 Water",
+        subtitle: "Intuition & Depth",
+        quote: "The current that flows between hearts without words",
+    },
+    Wood: {
+        title: "✨ Wood",
+        subtitle: "Growth & Vision",
+        quote: "The force that makes two souls reach higher together",
+    },
+    Metal: {
+        title: "💎 Metal",
+        subtitle: "Strength & Clarity",
+        quote: "The bond that cuts through illusion and reveals true connection",
+    },
+    Earth: {
+        title: "🌍 Earth",
+        subtitle: "Stability & Ground",
+        quote: "The foundation that holds two destinies in sacred balance",
+    },
+};
+
 export default function CosmicHarmonyTeaser({
     score,
     keyword,
@@ -23,6 +54,9 @@ export default function CosmicHarmonyTeaser({
 }: CosmicHarmonyTeaserProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const [containerSize, setContainerSize] = useState(300);
+    const [activeElement, setActiveElement] = useState<string | null>(null);
+    const [popupVisible, setPopupVisible] = useState(false);
+    const [popupFading, setPopupFading] = useState(false);
 
     useEffect(() => {
         const updateSize = () => {
@@ -86,6 +120,37 @@ export default function CosmicHarmonyTeaser({
         Wood: "#34D399",
     };
 
+    const handleIconClick = (elementName: string, e: React.MouseEvent | React.TouchEvent) => {
+        e.stopPropagation();
+        if (activeElement === elementName && popupVisible) {
+            // Fade out
+            setPopupFading(true);
+            setTimeout(() => {
+                setPopupVisible(false);
+                setPopupFading(false);
+                setActiveElement(null);
+            }, 300);
+        } else {
+            setActiveElement(elementName);
+            setPopupFading(false);
+            setPopupVisible(true);
+        }
+    };
+
+    const handleOutsideClick = () => {
+        if (popupVisible) {
+            setPopupFading(true);
+            setTimeout(() => {
+                setPopupVisible(false);
+                setPopupFading(false);
+                setActiveElement(null);
+            }, 300);
+        }
+    };
+
+    const activeDetail = activeElement ? elementDetails[activeElement] : null;
+    const activeColor = activeElement ? elementColors[activeElement] : "#E5C158";
+
     return (
         <div className="glass-panel w-full max-w-sm mx-auto rounded-2xl p-4 sm:p-6 relative overflow-hidden bg-[#111111]">
             <div className="flex items-center justify-between mb-6 sm:mb-8">
@@ -94,20 +159,21 @@ export default function CosmicHarmonyTeaser({
                     <p className="text-[10px] sm:text-xs text-slate-400 mt-1">Based on 5 elemental pillars</p>
                 </div>
                 <div className="text-right flex items-baseline gap-1">
-                    <span className="text-3xl sm:text-4xl font-serif text-[#E5C158] italic drop-shadow-[0_0_8px_rgba(229,193,88,0.4)]">
+                    <span className="text-3xl sm:text-4xl font-serif text-[#F5D060] italic drop-shadow-[0_0_12px_rgba(245,208,96,0.6)]">
                         {score}
                     </span>
                     <span className="text-xs sm:text-sm text-slate-500">/100</span>
                 </div>
             </div>
 
-            {/* Chart container: uses the measured width as square */}
+            {/* Chart container */}
             <div
                 ref={containerRef}
                 className="relative w-full mb-6 sm:mb-8"
                 style={{ height: containerSize }}
+                onClick={handleOutsideClick}
             >
-                {/* SVG radar chart — inset so icons at edges are visible */}
+                {/* SVG radar chart */}
                 <div className="absolute inset-0 flex items-center justify-center" style={{ padding: "10%" }}>
                     <svg
                         viewBox={`0 0 ${svgSize} ${svgSize}`}
@@ -121,8 +187,8 @@ export default function CosmicHarmonyTeaser({
                                 points={points}
                                 fill="none"
                                 stroke="#ffffff"
-                                strokeOpacity={0.05}
-                                strokeWidth="1"
+                                strokeOpacity={0.12}
+                                strokeWidth="1.5"
                             />
                         ))}
 
@@ -137,8 +203,8 @@ export default function CosmicHarmonyTeaser({
                                     x2={edge.x}
                                     y2={edge.y}
                                     stroke="#ffffff"
-                                    strokeOpacity={0.05}
-                                    strokeWidth="1"
+                                    strokeOpacity={0.12}
+                                    strokeWidth="1.5"
                                 />
                             );
                         })}
@@ -146,54 +212,137 @@ export default function CosmicHarmonyTeaser({
                         {/* Dynamic radar polygon */}
                         <polygon
                             points={polygonPoints}
-                            fill="rgba(229, 193, 88, 0.2)"
-                            stroke="#E5C158"
-                            strokeWidth="1.5"
+                            fill="rgba(245, 208, 96, 0.35)"
+                            stroke="#F5D060"
+                            strokeWidth="2.5"
                             className="transition-all duration-1000 ease-in-out"
-                            style={{ filter: "drop-shadow(0 0 12px rgba(229,193,88,0.6))" }}
+                            style={{ filter: "drop-shadow(0 0 16px rgba(245,208,96,0.8))" }}
                         />
 
-                        {/* Central Keyword */}
-                        <text
-                            x={center}
-                            y={center + 4}
-                            textAnchor="middle"
-                            fill="#E5C158"
-                            fontSize="11"
-                            fontWeight="bold"
-                            letterSpacing="3"
-                        >
-                            {keyword}
-                        </text>
+                        {/* Popup in chart center */}
+                        {popupVisible && activeDetail && (
+                            <g style={{
+                                opacity: popupFading ? 0 : 1,
+                                transition: "opacity 0.3s ease",
+                            }}>
+                                {/* Background rect */}
+                                <rect
+                                    x={center - 70}
+                                    y={center - 48}
+                                    width={140}
+                                    height={96}
+                                    rx={10}
+                                    ry={10}
+                                    fill="#0F0F0F"
+                                    fillOpacity={0.92}
+                                    stroke={activeColor}
+                                    strokeOpacity={0.5}
+                                    strokeWidth={1.2}
+                                />
+                                {/* Title */}
+                                <text
+                                    x={center}
+                                    y={center - 22}
+                                    textAnchor="middle"
+                                    fill={activeColor}
+                                    fontSize="13"
+                                    fontWeight="bold"
+                                >
+                                    {activeDetail.title}
+                                </text>
+                                {/* Subtitle */}
+                                <text
+                                    x={center}
+                                    y={center - 7}
+                                    textAnchor="middle"
+                                    fill="#E2E8F0"
+                                    fontSize="9"
+                                    letterSpacing="1.5"
+                                >
+                                    {activeDetail.subtitle.toUpperCase()}
+                                </text>
+                                {/* Separator */}
+                                <line
+                                    x1={center - 40}
+                                    y1={center + 2}
+                                    x2={center + 40}
+                                    y2={center + 2}
+                                    stroke={activeColor}
+                                    strokeOpacity={0.3}
+                                    strokeWidth={0.8}
+                                />
+                                {/* Quote line 1 */}
+                                <text
+                                    x={center}
+                                    y={center + 17}
+                                    textAnchor="middle"
+                                    fill="#94A3B8"
+                                    fontSize="7.5"
+                                    fontStyle="italic"
+                                >
+                                    {`"${activeDetail.quote.split(" ").slice(0, Math.ceil(activeDetail.quote.split(" ").length / 2)).join(" ")}`}
+                                </text>
+                                <text
+                                    x={center}
+                                    y={center + 29}
+                                    textAnchor="middle"
+                                    fill="#94A3B8"
+                                    fontSize="7.5"
+                                    fontStyle="italic"
+                                >
+                                    {`${activeDetail.quote.split(" ").slice(Math.ceil(activeDetail.quote.split(" ").length / 2)).join(" ")}"`}
+                                </text>
+                            </g>
+                        )}
+
+                        {/* Central Keyword — hide when popup is open */}
+                        {!popupVisible && (
+                            <text
+                                x={center}
+                                y={center + 4}
+                                textAnchor="middle"
+                                fill="#F5D060"
+                                fontSize="11"
+                                fontWeight="bold"
+                                letterSpacing="3"
+                            >
+                                {keyword}
+                            </text>
+                        )}
                     </svg>
                 </div>
 
-                {/* HTML icon overlays — positioned relative to the outer container */}
+                {/* HTML icon overlays */}
                 {labelPositions.map((pos, i) => {
-                    const color = elementColors[pos.data.element] || "#E5C158";
+                    const color = elementColors[pos.data.element] || "#F5D060";
+                    const isActive = activeElement === pos.data.element;
                     return (
                         <div
                             key={`icon-${i}`}
-                            className="absolute flex items-center justify-center"
+                            className="absolute flex items-center justify-center cursor-pointer select-none"
+                            onClick={(e) => handleIconClick(pos.data.element, e)}
                             style={{
-                                // The SVG is padded by 10% on each side, so map percent into [10%, 90%] range
-                                left: `calc(${pos.percentX * 0.8 + 10}% - 18px)`,
-                                top: `calc(${pos.percentY * 0.8 + 10}% - 18px)`,
-                                width: 36,
-                                height: 36,
+                                left: `calc(${pos.percentX * 0.8 + 10}% - 22px)`,
+                                top: `calc(${pos.percentY * 0.8 + 10}% - 22px)`,
+                                width: 44,
+                                height: 44,
                                 borderRadius: "50%",
-                                background: "#18181B",
-                                border: `1px solid ${color}40`,
-                                boxShadow: `0 0 8px ${color}30`,
+                                background: isActive ? `${color}22` : "#18181B",
+                                border: `${isActive ? 2 : 1.5}px solid ${color}${isActive ? "CC" : "60"}`,
+                                boxShadow: isActive
+                                    ? `0 0 18px ${color}60, 0 0 6px ${color}40`
+                                    : `0 0 10px ${color}30`,
+                                transform: isActive ? "scale(1.15)" : "scale(1)",
+                                transition: "transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease",
                             }}
                         >
                             <span
                                 className="material-symbols-outlined select-none"
                                 style={{
                                     color,
-                                    fontSize: 18,
+                                    fontSize: 22,
                                     lineHeight: 1,
-                                    filter: `drop-shadow(0 0 4px ${color})`,
+                                    filter: `drop-shadow(0 0 5px ${color})`,
                                 }}
                             >
                                 {pos.data.icon}
