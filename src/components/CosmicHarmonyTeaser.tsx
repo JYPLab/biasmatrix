@@ -49,7 +49,7 @@ const elementDetails: Record<
     },
 };
 
-import html2canvas from "html2canvas";
+import { toPng } from "html-to-image";
 
 export default function CosmicHarmonyTeaser({
     score,
@@ -105,14 +105,17 @@ export default function CosmicHarmonyTeaser({
             // Small delay to ensure layout updates
             await new Promise((resolve) => setTimeout(resolve, 50));
 
-            const canvas = await html2canvas(cardRef.current, {
+            const dataUrl = await toPng(cardRef.current, {
+                cacheBust: false,
                 backgroundColor: "#111111",
-                scale: 2,
-                useCORS: true,
-                logging: false,
+                style: {
+                    transform: "scale(1)",
+                    transformOrigin: "top left"
+                },
+                width: cardRef.current.offsetWidth,
+                height: cardRef.current.offsetHeight,
             });
 
-            const dataUrl = canvas.toDataURL("image/png");
             const link = document.createElement("a");
             link.download = `biasmatrix-${userName || "synergy"}.png`;
             link.href = dataUrl;
