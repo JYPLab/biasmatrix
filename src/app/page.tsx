@@ -537,7 +537,7 @@ function ReviewCarousel({ reviews }: { reviews: ReviewItem[] }) {
         ref={scrollRef}
         onTouchStart={handleTouchStart}
         onScroll={handleScroll}
-        className="flex overflow-x-auto gap-3 pb-3 pr-4 scrollbar-hide snap-x snap-mandatory"
+        className="flex overflow-x-auto gap-3 pb-3 pr-4 scrollbar-hide snap-x snap-mandatory items-start"
       >
         {reviews.map((r, i) => (
           <div
