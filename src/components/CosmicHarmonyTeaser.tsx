@@ -219,81 +219,7 @@ export default function CosmicHarmonyTeaser({
                             style={{ filter: "drop-shadow(0 0 16px rgba(245,208,96,0.8))" }}
                         />
 
-                        {/* Popup in chart center */}
-                        {popupVisible && activeDetail && (
-                            <g style={{
-                                opacity: popupFading ? 0 : 1,
-                                transition: "opacity 0.3s ease",
-                            }}>
-                                {/* Background rect */}
-                                <rect
-                                    x={center - 70}
-                                    y={center - 48}
-                                    width={140}
-                                    height={96}
-                                    rx={10}
-                                    ry={10}
-                                    fill="#0F0F0F"
-                                    fillOpacity={0.92}
-                                    stroke={activeColor}
-                                    strokeOpacity={0.5}
-                                    strokeWidth={1.2}
-                                />
-                                {/* Title */}
-                                <text
-                                    x={center}
-                                    y={center - 22}
-                                    textAnchor="middle"
-                                    fill={activeColor}
-                                    fontSize="13"
-                                    fontWeight="bold"
-                                >
-                                    {activeDetail.title}
-                                </text>
-                                {/* Subtitle */}
-                                <text
-                                    x={center}
-                                    y={center - 7}
-                                    textAnchor="middle"
-                                    fill="#E2E8F0"
-                                    fontSize="9"
-                                    letterSpacing="1.5"
-                                >
-                                    {activeDetail.subtitle.toUpperCase()}
-                                </text>
-                                {/* Separator */}
-                                <line
-                                    x1={center - 40}
-                                    y1={center + 2}
-                                    x2={center + 40}
-                                    y2={center + 2}
-                                    stroke={activeColor}
-                                    strokeOpacity={0.3}
-                                    strokeWidth={0.8}
-                                />
-                                {/* Quote line 1 */}
-                                <text
-                                    x={center}
-                                    y={center + 17}
-                                    textAnchor="middle"
-                                    fill="#94A3B8"
-                                    fontSize="7.5"
-                                    fontStyle="italic"
-                                >
-                                    {`"${activeDetail.quote.split(" ").slice(0, Math.ceil(activeDetail.quote.split(" ").length / 2)).join(" ")}`}
-                                </text>
-                                <text
-                                    x={center}
-                                    y={center + 29}
-                                    textAnchor="middle"
-                                    fill="#94A3B8"
-                                    fontSize="7.5"
-                                    fontStyle="italic"
-                                >
-                                    {`${activeDetail.quote.split(" ").slice(Math.ceil(activeDetail.quote.split(" ").length / 2)).join(" ")}"`}
-                                </text>
-                            </g>
-                        )}
+                        {/* Popup placeholder — rendered as HTML overlay below */}
 
                         {/* Central Keyword — hide when popup is open */}
                         {!popupVisible && (
@@ -350,6 +276,42 @@ export default function CosmicHarmonyTeaser({
                         </div>
                     );
                 })}
+                {/* HTML popup overlay — centered over the chart */}
+                {popupVisible && activeDetail && (
+                    <div
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                            width: "58%",
+                            maxWidth: 200,
+                            minWidth: 140,
+                            background: "rgba(15, 15, 15, 0.95)",
+                            border: `1.5px solid ${activeColor}80`,
+                            borderRadius: 12,
+                            padding: "12px 14px",
+                            textAlign: "center",
+                            zIndex: 20,
+                            opacity: popupFading ? 0 : 1,
+                            transition: "opacity 0.3s ease",
+                            boxShadow: `0 0 24px ${activeColor}30`,
+                            pointerEvents: "none",
+                        }}
+                    >
+                        <p style={{ color: activeColor, fontWeight: 700, fontSize: 15, margin: 0 }}>
+                            {activeDetail.title}
+                        </p>
+                        <p style={{ color: "#E2E8F0", fontSize: 10, letterSpacing: "1.5px", margin: "4px 0" }}>
+                            {activeDetail.subtitle.toUpperCase()}
+                        </p>
+                        <div style={{ height: 1, background: `${activeColor}40`, margin: "6px 0" }} />
+                        <p style={{ color: "#94A3B8", fontSize: 11, fontStyle: "italic", margin: 0, lineHeight: 1.5 }}>
+                            &ldquo;{activeDetail.quote}&rdquo;
+                        </p>
+                    </div>
+                )}
             </div>
 
             <div className="bg-[#18181B]/80 rounded-xl px-4 py-4 sm:p-5 border border-white/5 relative overflow-hidden">
