@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
+import html2canvas from 'html2canvas';
 
 interface SubSection {
     title?: string;
@@ -37,6 +38,7 @@ interface ReportData {
     userName: string;
     idolName: string;
     score: number;
+    typeName?: string;
     content: MassiveReport;
 }
 
@@ -65,13 +67,63 @@ const InsightCard = ({ label, title, icon }: { label: string, title: string, ico
     </div>
 );
 
-export default function ReportView({ reportData, mock }: { reportData: ReportData, mock: boolean }) {
+export default function ReportView({ reportData, mock, reportId }: { reportData: ReportData, mock: boolean, reportId: string }) {
     useEffect(() => {
         document.body.classList.add('bg-[#0A0A0A]', 'text-white');
         return () => document.body.classList.remove('bg-[#0A0A0A]', 'text-white');
     }, []);
 
     const content = reportData.content || {};
+
+    const handleShareTopRight = async () => {
+        const text = `Just unlocked my full BiasMatrix report \nwith ${reportData.idolName} ✨\nbiasmatrix.com/report/${reportId}`;
+        shareContent(text);
+    };
+
+    const handleShareBottom = async () => {
+        const text = `${reportData.userName}'s ${reportData.score}/100 ${reportData.typeName || 'SOULMATCH'} with \n${reportData.idolName} ✨\nMy full SoulMatch Report →\nbiasmatrix.com/report/${reportId}`;
+        shareContent(text);
+    };
+
+    const shareContent = async (text: string) => {
+        if (navigator.share) {
+            try {
+                await navigator.share({ text });
+            } catch (err) {
+                console.log('Share canceled or failed', err);
+            }
+        } else {
+            try {
+                await navigator.clipboard.writeText(text);
+                alert('Copied to clipboard!');
+            } catch (err) {
+                console.error('Failed to copy', err);
+            }
+        }
+    };
+
+    const handleSaveImage = async () => {
+        const element = document.getElementById('capture-mantra-area');
+        if (!element) return;
+        
+        try {
+            const canvas = await html2canvas(element, {
+                backgroundColor: '#0A0A0A',
+                scale: window.devicePixelRatio || 2,
+                logging: false,
+                useCORS: true,
+            });
+            const dataUrl = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = `BiasMatrix-${reportData.idolName.replace(/\s+/g, '')}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (err) {
+            console.error('Failed to save image', err);
+            alert('Failed to save image. Please try again.');
+        }
+    };
 
     // Helper to extract all text paragraphs from a chapter's array properties
     const extractAllParagraphs = (chapterData: SubSection): string[] => {
@@ -155,7 +207,7 @@ export default function ReportView({ reportData, mock }: { reportData: ReportDat
                 <div className="font-serif text-sm tracking-[0.3em] text-[#D4AF37] uppercase">
                     BiasMatrix
                 </div>
-                <button onClick={() => window.print()} className="text-[#D4AF37] hover:text-white transition-colors">
+                <button onClick={handleShareTopRight} className="text-[#D4AF37] hover:text-white transition-colors">
                     <span className="material-symbols-outlined text-xl">ios_share</span>
                 </button>
             </nav>
@@ -240,11 +292,38 @@ export default function ReportView({ reportData, mock }: { reportData: ReportDat
                         <span className="material-symbols-outlined text-[#D4AF37] text-4xl mb-6">wb_incandescent</span>
                         <h2 className="text-3xl font-serif text-white mb-8 tracking-wide">{content.conclusion.title || 'The Final Oracle'}</h2>
                         <div className="space-y-6 text-[#E0E0E0] text-[15px] leading-[1.9] tracking-wide font-light font-lora">
-                            {content.conclusion.paragraphs?.map((p, i) => (
-                                <p key={i} className={i === content.conclusion!.paragraphs!.length - 1 ? "text-[#D4AF37] italic text-xl mt-12 font-serif" : ""}>
-                                    {p}
-                                </p>
-                            ))}
+                            {content.conclusion.paragraphs?.map((p, i) => {
+                                if (i === content.conclusion!.paragraphs!.length - 1) {
+                                    return (
+                                        <div key={i} id="capture-mantra-area" className="relative mt-12 bg-[#0A0A0A] p-8 rounded-2xl border border-[#D4AF37]/20 shadow-[0_4px_30px_rgba(212,175,55,0.1)]">
+                                            <p className="text-[#D4AF37] italic text-xl md:text-2xl font-serif mb-8 leading-relaxed">
+                                                "{p}"
+                                            </p>
+                                            <div className="flex flex-col items-center justify-center pt-6 border-t border-[#D4AF37]/20">
+                                                <div className="text-4xl font-serif text-white mb-2 tracking-wide">{reportData.score}<span className="text-xl text-white/50">/100</span></div>
+                                                <div className="text-[#D4AF37] text-xs tracking-[0.3em] uppercase font-bold">{reportData.typeName || 'SOULMATCH'}</div>
+                                            </div>
+                                            <div className="mt-8 text-center opacity-50 text-[10px] tracking-widest text-[#D4AF37] uppercase">
+                                                biasmatrix.com
+                                            </div>
+                                        </div>
+                                    );
+                                }
+                                return (
+                                    <p key={i}>
+                                        {p}
+                                    </p>
+                                );
+                            })}
+                        </div>
+                        
+                        <div className="mt-12 flex flex-col md:flex-row gap-4 justify-center items-center print:hidden">
+                            <button onClick={handleSaveImage} className="w-full md:w-auto border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10 px-8 py-3.5 rounded-full font-serif text-[13px] tracking-widest transition-colors flex items-center justify-center gap-2">
+                                📸 Save this moment
+                            </button>
+                            <button onClick={handleShareBottom} className="w-full md:w-auto bg-gradient-to-r from-[#D4AF37] to-[#B8962E] text-[#0A0A0A] hover:opacity-90 px-8 py-3.5 rounded-full font-serif text-[13px] tracking-widest font-bold transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(212,175,55,0.3)]">
+                                📤 Share my report
+                            </button>
                         </div>
                     </section>
                 )}

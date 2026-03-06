@@ -27,10 +27,12 @@ export default async function ReportPage(props: { params: Promise<{ id: string }
         return (
             <ReportView
                 mock={true}
+                reportId={id}
                 reportData={{
                     userName: 'Sarah',
                     idolName: 'Jungkook',
                     score: 92,
+                    typeName: 'CELESTIAL TWINFIRE',
                     content: {
                         twinFlame: "Your souls are bound by a rare 7-year cycle. You provide the foundation his turbulent creative energy desperately seeks.",
                         energyFlow: "Your Water energy perfectly extinguishes his excess Fire, bringing him peace. However, during Summer months, you may feel drained.",
@@ -57,13 +59,30 @@ export default async function ReportPage(props: { params: Promise<{ id: string }
         }
     }
 
+    const getKeyword = (score: number) => {
+        if (score >= 95) return 'TWIN FLAME DESTINY';
+        if (score >= 90) return 'CELESTIAL TWINFIRE';
+        if (score >= 85) return 'SOULFIRE BOND';
+        if (score >= 80) return 'CELESTIAL VELOCITY';
+        if (score >= 75) return 'CELESTIAL PULSE';
+        if (score >= 70) return 'KARMIC ECHO';
+        if (score >= 65) return 'KARMIC SPARK';
+        if (score >= 60) return 'COSMIC SPARK';
+        return 'KARMIC DESTINY';
+    };
+
+    const finalScore = report.synergy_score || report.energy_score || 85;
+    const finalTypeName = getKeyword(finalScore);
+
     return (
         <ReportView
             mock={false}
+            reportId={id}
             reportData={{
                 userName: report.users?.nickname || 'Seeker',
-                idolName: report.idols?.name || 'Your Bias',
-                score: report.synergy_score || 85,
+                idolName: report.idols?.name || report.idols?.member_name || 'Your Bias',
+                score: finalScore,
+                typeName: finalTypeName,
                 content: content
             }}
         />
