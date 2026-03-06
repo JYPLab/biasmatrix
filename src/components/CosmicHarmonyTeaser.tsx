@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import html2canvas from "html2canvas";
 
 interface ElementData {
     element: string;
@@ -14,6 +13,7 @@ interface CosmicHarmonyTeaserProps {
     keyword: string;
     teaserText: string;
     elementsData: ElementData[];
+    showActions?: boolean;
     userName?: string;
     idolName?: string;
 }
@@ -49,59 +49,86 @@ const elementDetails: Record<
     },
 };
 
+import html2canvas from "html2canvas";
+
 export default function CosmicHarmonyTeaser({
     score,
     keyword,
     teaserText,
     elementsData,
+    showActions,
     userName,
     idolName,
 }: CosmicHarmonyTeaserProps) {
+    const cardRef = useRef<HTMLDivElement>(null);
+    const watermarkRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const captureRef = useRef<HTMLDivElement>(null);
     const [containerSize, setContainerSize] = useState(300);
     const [activeElement, setActiveElement] = useState<string | null>(null);
     const [popupVisible, setPopupVisible] = useState(false);
     const [popupFading, setPopupFading] = useState(false);
-    const [isCapturing, setIsCapturing] = useState(false);
-
-    const handleSaveCard = async () => {
-        if (!captureRef.current) return;
-        setIsCapturing(true);
-        try {
-            await new Promise((resolve) => setTimeout(resolve, 50));
-            const canvas = await html2canvas(captureRef.current, {
-                backgroundColor: "#111111",
-                scale: 2,
-                useCORS: true,
-            });
-            const link = document.createElement("a");
-            link.download = `CosmicHarmony_${userName || "Result"}.png`;
-            link.href = canvas.toDataURL("image/png");
-            link.click();
-        } catch (err) {
-            console.error("Failed to capture image", err);
-        } finally {
-            setIsCapturing(false);
-        }
-    };
+    const [isSaving, setIsSaving] = useState(false);
 
     const handleShare = async () => {
-        const text = `${userName || "Someone"}'s ${score}/100 ${keyword.replace(/✨/g, '').trim()} with ${
-            idolName || "their Bias"
-        } 🔥\nDiscover your Karmic Synergy → biasmatrix.com`;
-        
+        const text = `${userName || "Someone"}'s ${score}/100 ${keyword} with ${idolName || "their Bias"} 🔥\nDiscover your Karmic Synergy → biasmatrix.com`;
         if (navigator.share) {
             try {
                 await navigator.share({
+                    title: "My Cosmic Harmony",
                     text: text,
                 });
             } catch (err) {
-                console.error("Share failed", err);
+                console.log("Error sharing", err);
             }
         } else {
-            navigator.clipboard.writeText(text);
-            alert("Copied to clipboard!");
+            try {
+                await navigator.clipboard.writeText(text);
+                alert("Share link copied to clipboard!");
+            } catch (err) {
+                console.log("Failed to copy", err);
+            }
+        }
+    };
+
+    const handleSaveCard = async () => {
+        if (!cardRef.current) return;
+        setIsSaving(true);
+        try {
+            if (watermarkRef.current) {
+                watermarkRef.current.style.display = "block";
+            }
+            const actionsDiv = cardRef.current.querySelector(".actions-container") as HTMLElement;
+            if (actionsDiv) {
+                actionsDiv.style.display = "none";
+            }
+
+            // Small delay to ensure layout updates
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            const canvas = await html2canvas(cardRef.current, {
+                backgroundColor: "#111111",
+                scale: 2,
+                useCORS: true,
+                logging: false,
+            });
+
+            if (watermarkRef.current) {
+                watermarkRef.current.style.display = "none";
+            }
+            if (actionsDiv) {
+                actionsDiv.style.display = "flex";
+            }
+
+            const dataUrl = canvas.toDataURL("image/png");
+            const link = document.createElement("a");
+            link.download = `biasmatrix-${userName || "synergy"}.png`;
+            link.href = dataUrl;
+            link.click();
+        } catch (err) {
+            console.error("Failed to save card", err);
+            alert("Failed to save image. Please try again.");
+        } finally {
+            setIsSaving(false);
         }
     };
 
@@ -199,8 +226,17 @@ export default function CosmicHarmonyTeaser({
     const activeColor = activeElement ? elementColors[activeElement] : "#E5C158";
 
     return (
-        <div ref={captureRef} className="glass-panel w-full max-w-sm mx-auto rounded-2xl p-4 sm:p-6 relative overflow-hidden bg-[#111111]">
-            <div className="mb-6 sm:mb-8 text-center">
+        <div ref={cardRef} className="glass-panel w-full max-w-sm mx-auto rounded-2xl p-4 sm:p-6 relative overflow-hidden bg-[#111111]">
+            <div
+                ref={watermarkRef}
+                style={{ display: "none" }}
+                className="absolute bottom-2 left-0 right-0 text-center z-50 pointer-events-none"
+            >
+                <span className="text-[10px] sm:text-xs text-white/30 font-serif tracking-widest uppercase">
+                    biasmatrix.com
+                </span>
+            </div>
+            <div className="mb-6 sm:mb-8 text-center z-10 relative">
                 <h3 className="font-serif text-xl sm:text-2xl text-white">Your Cosmic Harmony</h3>
                 <p className="text-[10px] sm:text-xs text-slate-400 mt-1">Based on 5 elemental pillars</p>
                 <div className="flex items-baseline justify-center gap-1 mt-3">
@@ -349,39 +385,33 @@ export default function CosmicHarmonyTeaser({
                 )}
             </div>
 
-            <div className="bg-[#18181B]/80 rounded-xl px-4 py-4 sm:p-5 border border-white/5 relative overflow-hidden">
+            <div className="bg-[#18181B]/80 rounded-xl px-4 py-4 sm:p-5 border border-white/5 relative overflow-hidden z-10">
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#E5C158]/5 to-transparent blur-xl"></div>
                 <p className="text-[14px] sm:text-[15px] text-slate-300 leading-relaxed text-center font-serif relative z-10 text-pretty">
                     {teaserText}
                 </p>
             </div>
 
-            {isCapturing && (
-                <div className="mt-8 text-center text-xs text-slate-500 font-serif tracking-widest uppercase">
-                    biasmatrix.com
+            {showActions && (
+                <div className="actions-container mt-6 pt-5 border-t border-white/10 flex items-center justify-between gap-3 relative z-10 transition-opacity duration-200">
+                    <button
+                        onClick={handleSaveCard}
+                        disabled={isSaving}
+                        className="flex-1 py-2.5 px-4 rounded-xl border border-[#F5D060]/50 text-[#F5D060] text-sm font-bold flex items-center justify-center gap-2 hover:bg-[#F5D060]/10 transition-colors disabled:opacity-50"
+                    >
+                        <span className="material-symbols-outlined text-[18px]">
+                            {isSaving ? "hourglass_empty" : "photo_camera"}
+                        </span>
+                        {isSaving ? "Saving..." : "Save Card"}
+                    </button>
+                    <button
+                        onClick={handleShare}
+                        className="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#F5D060] to-[#E5C158] text-[#111111] text-sm font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-[0_0_15px_rgba(245,208,96,0.2)]"
+                    >
+                        <span className="material-symbols-outlined text-[18px]">ios_share</span>
+                        Share
+                    </button>
                 </div>
-            )}
-
-            {!isCapturing && (
-                <>
-                    <div className="w-full h-px bg-white/10 my-6" />
-                    <div className="flex items-center gap-3">
-                        <button
-                            onClick={handleSaveCard}
-                            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-[#F5D060] text-[#F5D060] font-bold text-sm bg-transparent hover:bg-[#F5D060]/10 transition-colors"
-                        >
-                            <span className="material-symbols-outlined text-[18px]">photo_camera</span>
-                            Save Card
-                        </button>
-                        <button
-                            onClick={handleShare}
-                            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-[#F5D060] bg-[#F5D060] text-[#111111] font-bold text-sm hover:opacity-90 transition-opacity"
-                        >
-                            <span className="material-symbols-outlined text-[18px]">ios_share</span>
-                            Share
-                        </button>
-                    </div>
-                </>
             )}
         </div>
     );

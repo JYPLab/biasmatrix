@@ -366,8 +366,9 @@ export default function Home() {
                 { element: 'Water', value: 40, icon: 'water_drop' },
                 { element: 'Wood', value: 85, icon: 'auto_awesome' }
               ]}
+              showActions={true}
               userName={name}
-              idolName={availableMembers.find(m => m.id === selectedMember)?.member_name}
+              idolName={availableMembers.find(m => m.id === selectedMember)?.member_name || ''}
             />
           </div>
         )}
@@ -815,25 +816,20 @@ function DummyResultCarousel() {
         onScroll={handleScroll}
         className="flex overflow-x-auto gap-4 px-[10%] pb-4 scrollbar-hide snap-x snap-mandatory items-stretch"
       >
-        {dummyResults.map((r, i) => {
-          const dummyIdols = ["Jungkook", "Taehyung", "Felix", "Hyunjin", "Bang Chan", "Yeonjun", "Sunoo", "Ni-ki", "Mingyu", "Wonwoo"];
-          return (
-            <div
-              key={i}
-              className="w-[80%] shrink-0 snap-center relative transition-all duration-500"
-              style={{ opacity: i === activeIdx ? 1 : 0.5, transform: i === activeIdx ? 'scale(1)' : 'scale(0.95)' }}
-            >
-              <CosmicHarmonyTeaser
-                score={r.score}
-                keyword={r.keyword}
-                teaserText={r.text}
-                elementsData={r.elementsData}
-                userName={r.name}
-                idolName={dummyIdols[i % dummyIdols.length]}
-              />
-            </div>
-          );
-        })}
+        {dummyResults.map((r, i) => (
+          <div
+            key={i}
+            className="w-[80%] shrink-0 snap-center relative transition-all duration-500"
+            style={{ opacity: i === activeIdx ? 1 : 0.5, transform: i === activeIdx ? 'scale(1)' : 'scale(0.95)' }}
+          >
+            <CosmicHarmonyTeaser
+              score={r.score}
+              keyword={r.keyword}
+              teaserText={r.text}
+              elementsData={r.elementsData}
+            />
+          </div>
+        ))}
       </div>
     </section>
   );

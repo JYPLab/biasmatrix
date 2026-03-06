@@ -165,7 +165,7 @@ Generate a massive, deeply detailed, and comprehensive destiny report analyzing 
         const magicLink = `${appUrl}/report/${reportId}`;
 
         const { data: emailData, error: emailError } = await resend.emails.send({
-          from: 'BiasMatrix Oracle <onboarding@resend.dev>',
+          from: 'BiasMatrix Oracle <hello@biasmatrix.com>',
           to: report.users.email,
           subject: `The stars have spoken. Your Cosmic Harmony with ${report.idols.member_name} is ready. ✨`,
           html: `
