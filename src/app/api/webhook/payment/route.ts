@@ -161,8 +161,7 @@ Generate a massive, deeply detailed, and comprehensive destiny report analyzing 
         }).eq('id', reportId);
 
         // 5. Send Email via Resend in Persona
-        const vercelUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL || (vercelUrl ? `https://${vercelUrl}` : 'http://localhost:3000');
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://biasmatrix.com';
         const magicLink = `${appUrl}/report/${reportId}`;
 
         const { data: emailData, error: emailError } = await resend.emails.send({

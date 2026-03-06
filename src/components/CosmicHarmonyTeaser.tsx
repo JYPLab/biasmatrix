@@ -153,17 +153,18 @@ export default function CosmicHarmonyTeaser({
 
     return (
         <div className="glass-panel w-full max-w-sm mx-auto rounded-2xl p-4 sm:p-6 relative overflow-hidden bg-[#111111]">
-            <div className="flex items-center justify-between mb-6 sm:mb-8">
-                <div>
-                    <h3 className="font-serif text-xl sm:text-2xl text-white">Your Cosmic Harmony</h3>
-                    <p className="text-[10px] sm:text-xs text-slate-400 mt-1">Based on 5 elemental pillars</p>
-                </div>
-                <div className="text-right flex items-baseline gap-1">
+            <div className="mb-6 sm:mb-8 text-center">
+                <h3 className="font-serif text-xl sm:text-2xl text-white">Your Cosmic Harmony</h3>
+                <p className="text-[10px] sm:text-xs text-slate-400 mt-1">Based on 5 elemental pillars</p>
+                <div className="flex items-baseline justify-center gap-1 mt-3">
                     <span className="text-3xl sm:text-4xl font-serif text-[#F5D060] italic drop-shadow-[0_0_12px_rgba(245,208,96,0.6)]">
                         {score}
                     </span>
                     <span className="text-xs sm:text-sm text-slate-500">/100</span>
                 </div>
+                <p className="text-sm sm:text-base font-bold tracking-[0.15em] uppercase text-[#F5D060] mt-1 drop-shadow-[0_0_8px_rgba(245,208,96,0.5)]">
+                    ✨ {keyword} ✨
+                </p>
             </div>
 
             {/* Chart container */}
@@ -221,20 +222,7 @@ export default function CosmicHarmonyTeaser({
 
                         {/* Popup placeholder — rendered as HTML overlay below */}
 
-                        {/* Central Keyword — hide when popup is open */}
-                        {!popupVisible && (
-                            <text
-                                x={center}
-                                y={center + 4}
-                                textAnchor="middle"
-                                fill="#F5D060"
-                                fontSize="11"
-                                fontWeight="bold"
-                                letterSpacing="3"
-                            >
-                                {keyword}
-                            </text>
-                        )}
+
                     </svg>
                 </div>
 
