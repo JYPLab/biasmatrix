@@ -419,7 +419,7 @@ export default function Home() {
           <div className="flex overflow-x-auto gap-4 pb-4 pr-4 scrollbar-hide snap-x snap-mandatory">
 
             {/* 1 - Sarah */}
-            <div className="min-w-[85%] snap-center glass-panel p-5 rounded-2xl border border-primary/20 relative flex-shrink-0">
+            <div className="min-w-[78%] snap-center glass-panel p-5 rounded-2xl border border-primary/20 relative flex-shrink-0">
               <span className="material-symbols-outlined absolute top-4 right-4 text-primary/20 text-4xl">format_quote</span>
               <div className="flex items-start gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-primary/30 font-serif">S</div>
@@ -436,7 +436,7 @@ export default function Home() {
             </div>
 
             {/* 2 - Min-ji */}
-            <div className="min-w-[85%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
+            <div className="min-w-[78%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
               <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
               <div className="flex items-start gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">M</div>
@@ -453,7 +453,7 @@ export default function Home() {
             </div>
 
             {/* 3 - Priya */}
-            <div className="min-w-[85%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
+            <div className="min-w-[78%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
               <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
               <div className="flex items-start gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">P</div>
@@ -470,7 +470,7 @@ export default function Home() {
             </div>
 
             {/* 4 - Camille */}
-            <div className="min-w-[85%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
+            <div className="min-w-[78%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
               <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
               <div className="flex items-start gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">C</div>
@@ -487,7 +487,7 @@ export default function Home() {
             </div>
 
             {/* 5 - Yuki */}
-            <div className="min-w-[85%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
+            <div className="min-w-[78%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
               <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
               <div className="flex items-start gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">Y</div>
@@ -504,7 +504,7 @@ export default function Home() {
             </div>
 
             {/* 6 - Isabella */}
-            <div className="min-w-[85%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
+            <div className="min-w-[78%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
               <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
               <div className="flex items-start gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">I</div>
@@ -521,7 +521,7 @@ export default function Home() {
             </div>
 
             {/* 7 - Hannah */}
-            <div className="min-w-[85%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
+            <div className="min-w-[78%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
               <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
               <div className="flex items-start gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">H</div>
@@ -538,7 +538,7 @@ export default function Home() {
             </div>
 
             {/* 8 - Nadia */}
-            <div className="min-w-[85%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
+            <div className="min-w-[78%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
               <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
               <div className="flex items-start gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">N</div>
