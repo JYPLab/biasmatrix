@@ -302,7 +302,6 @@ export default function CosmicHarmonyTeaser({
                             stroke="#F5D060"
                             strokeWidth="2.5"
                             className="transition-all duration-1000 ease-in-out"
-                            style={{ filter: "drop-shadow(0 0 16px rgba(245,208,96,0.8))" }}
                         />
 
                         {/* Popup placeholder — rendered as HTML overlay below */}
@@ -341,7 +340,7 @@ export default function CosmicHarmonyTeaser({
                                     color,
                                     fontSize: 22,
                                     lineHeight: 1,
-                                    filter: `drop-shadow(0 0 5px ${color})`,
+                                    textShadow: `0 0 5px ${color}`,
                                 }}
                             >
                                 {pos.data.icon}
@@ -388,7 +387,7 @@ export default function CosmicHarmonyTeaser({
             </div>
 
             <div className="bg-[#18181B]/80 rounded-xl px-4 py-4 sm:p-5 border border-white/5 relative overflow-hidden z-10">
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#E5C158]/5 to-transparent blur-xl"></div>
+                <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 50% 50%, rgba(229,193,88,0.08) 0%, transparent 60%)' }}></div>
                 <p className="text-[14px] sm:text-[15px] text-slate-300 leading-relaxed text-center font-serif relative z-10 text-pretty">
                     {teaserText}
                 </p>
