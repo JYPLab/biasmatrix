@@ -163,7 +163,12 @@ export default function CosmicHarmonyTeaser({
                     <span className="text-xs sm:text-sm text-slate-500">/100</span>
                 </div>
                 <p className="text-sm sm:text-base font-bold tracking-[0.15em] uppercase text-[#F5D060] mt-1 drop-shadow-[0_0_8px_rgba(245,208,96,0.5)]">
-                    ✨ {keyword} ✨
+                    ✨ {keyword.split(' ').map((word, i, arr) => (
+                        <React.Fragment key={i}>
+                            {word}
+                            {i < arr.length - 1 && <br />}
+                        </React.Fragment>
+                    ))} ✨
                 </p>
             </div>
 
