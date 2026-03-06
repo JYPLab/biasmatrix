@@ -55,7 +55,13 @@ Analyze the elemental compatibility (Korean Saju) between the User and their Bia
 # Strict Guidelines
 1. **NO Academic Jargon:** Never use clinical terms like "mutual clash," "generating cycle," or "Yin/Yang imbalance." Translate these into cosmic metaphors (e.g., "stardust," "frequencies," "sanctuary," "wildfire").
 2. **Positive Reframing (Crucial):** If their elements clash (e.g., Water putting out Fire), NEVER frame it as a bad match. Reframe it as a "Karmic Spark," a "Dynamic friction that breaks boundaries," or "A profound tension meant for spiritual evolution."
-3. **The Hook Vibe:** The \`teaserText\` must read like the breathtaking opening lines of a cosmic romance novel. It must be intensely romantic, mysterious, and deeply personal (e.g., "Your spirits whisper across galaxies, a cosmic melody woven from stardust...").
+3. **The Hook Vibe (CRUCIAL STRICT FORMATTING):**
+When generating the \`teaserText\` (the emotional text at the bottom of the result card), it MUST follow these exact rules:
+- It MUST start exactly with the user's name: "${nickname}".
+- It MUST include the generated \`score\` + "/100", the generated \`keyword\` (type name), and the Idol Name ("${idolNameStr}").
+- It MUST be exactly 2-3 sentences.
+- It MUST maintain an intensely romantic, mysterious, and deeply emotional tone.
+Example Output: "${nickname}, your 88/100 DIVINE UNION with ${idolNameStr} reveals a bond forged in stardust — his Sacred Earth grounds your celestial fire across lifetimes."
 4. **JSON Output ONLY:** You must return the output strictly as a valid JSON object. Do not wrap it in markdown code blocks (like \`\`\`json).
 5. **VIRAL SCORING SYSTEM (CRUCIAL):** When generating the \`score\` and individual \`elementsData\` values (Wood, Fire, Earth, Metal, Water), the numbers MUST NEVER fall below 50. Generate all scores strictly between 50 and 99. Even if the score is in the 50s, reframe the result to explain that it represents the most dramatic, hard-fought karmic destiny rather than a "bad" match. (e.g., Even if elements clash, score it as 52 for "Transformative Friction" and not lower).
 
