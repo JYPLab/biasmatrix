@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useDebounce } from 'use-debounce';
 import axios from 'axios';
 import { supabase } from '@/lib/supabase';
@@ -414,148 +414,19 @@ export default function Home() {
         </section>
 
         {/* REVIEWS */}
-        <section className="pl-4 pb-4">
-          <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 pr-4">What Fans Are Saying</h2>
-          <div className="flex overflow-x-auto gap-4 pb-4 pr-4 scrollbar-hide snap-x snap-mandatory">
-
-            {/* 1 - Sarah */}
-            <div className="min-w-[78%] snap-center glass-panel p-5 rounded-2xl border border-primary/20 relative flex-shrink-0">
-              <span className="material-symbols-outlined absolute top-4 right-4 text-primary/20 text-4xl">format_quote</span>
-              <div className="flex items-start gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-primary/30 font-serif">S</div>
-                <div>
-                  <div className="flex text-primary mb-1">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
-                    ))}
-                  </div>
-                  <p className="text-white text-xs font-semibold">Sarah / Los Angeles</p>
-                </div>
-              </div>
-              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;I got 91 with Jungkook and literally cried. The Twin Flame analysis described my personality so accurately I had to put my phone down.&quot;</p>
-            </div>
-
-            {/* 2 - Min-ji */}
-            <div className="min-w-[78%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
-              <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
-              <div className="flex items-start gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">M</div>
-                <div>
-                  <div className="flex text-primary mb-1">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
-                    ))}
-                  </div>
-                  <p className="text-white text-xs font-semibold">Min-ji / Seoul</p>
-                </div>
-              </div>
-              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;I didn&apos;t believe in this stuff until my friend sent me her result. Got 78 with Taehyung and the Cosmic Flow section was uncomfortably accurate.&quot;</p>
-            </div>
-
-            {/* 3 - Priya */}
-            <div className="min-w-[78%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
-              <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
-              <div className="flex items-start gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">P</div>
-                <div>
-                  <div className="flex text-primary mb-1">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
-                    ))}
-                  </div>
-                  <p className="text-white text-xs font-semibold">Priya / London</p>
-                </div>
-              </div>
-              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;Showed this to my whole stan group. We all did it and spent 2 hours comparing results. The 2026 forecast part gave me chills.&quot;</p>
-            </div>
-
-            {/* 4 - Camille */}
-            <div className="min-w-[78%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
-              <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
-              <div className="flex items-start gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">C</div>
-                <div>
-                  <div className="flex text-primary mb-1">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
-                    ))}
-                  </div>
-                  <p className="text-white text-xs font-semibold">Camille / Paris</p>
-                </div>
-              </div>
-              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;Got 67 with my bias and I was devastated 😭 But the report explained exactly WHY and it made so much sense. Worth every penny.&quot;</p>
-            </div>
-
-            {/* 5 - Yuki */}
-            <div className="min-w-[78%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
-              <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
-              <div className="flex items-start gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">Y</div>
-                <div>
-                  <div className="flex text-primary mb-1">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
-                    ))}
-                  </div>
-                  <p className="text-white text-xs font-semibold">Yuki / Tokyo</p>
-                </div>
-              </div>
-              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;The karmic past life section hit different. How does it know these things from just a birthday?&quot;</p>
-            </div>
-
-            {/* 6 - Isabella */}
-            <div className="min-w-[78%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
-              <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
-              <div className="flex items-start gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">I</div>
-                <div>
-                  <div className="flex text-primary mb-1">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
-                    ))}
-                  </div>
-                  <p className="text-white text-xs font-semibold">Isabella / São Paulo</p>
-                </div>
-              </div>
-              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;My bias is Felix and I got CELESTIAL TWINFIRE 🔥 I&apos;ve been telling everyone. This is not like other compatibility tests at all.&quot;</p>
-            </div>
-
-            {/* 7 - Hannah */}
-            <div className="min-w-[78%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
-              <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
-              <div className="flex items-start gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">H</div>
-                <div>
-                  <div className="flex text-primary mb-1">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
-                    ))}
-                  </div>
-                  <p className="text-white text-xs font-semibold">Hannah / Sydney</p>
-                </div>
-              </div>
-              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;Skeptic turned believer. The energy analysis described a tension I couldn&apos;t even explain myself. Scary good.&quot;</p>
-            </div>
-
-            {/* 8 - Nadia */}
-            <div className="min-w-[78%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
-              <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
-              <div className="flex items-start gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">N</div>
-                <div>
-                  <div className="flex text-primary mb-1">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
-                    ))}
-                  </div>
-                  <p className="text-white text-xs font-semibold">Nadia / Toronto</p>
-                </div>
-              </div>
-              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;Did this at 2am and ended up reading the whole report. The 2026 destiny timeline has me actually planning my year differently lol&quot;</p>
-            </div>
-
-          </div>
-        </section>
+        {(() => {
+          const reviews = [
+            { initial: 'S', border: 'border-primary/30', quote: 'border-primary/20', quoteColor: 'text-primary/20', name: 'Sarah / Los Angeles', text: '"I got 91 with Jungkook and literally cried. The Twin Flame analysis described my personality so accurately I had to put my phone down."' },
+            { initial: 'M', border: 'border-white/20', quote: 'border-white/10', quoteColor: 'text-white/10', name: 'Min-ji / Seoul', text: '"I didn\'t believe in this stuff until my friend sent me her result. Got 78 with Taehyung and the Cosmic Flow section was uncomfortably accurate."' },
+            { initial: 'P', border: 'border-white/20', quote: 'border-white/10', quoteColor: 'text-white/10', name: 'Priya / London', text: '"Showed this to my whole stan group. We all did it and spent 2 hours comparing results. The 2026 forecast part gave me chills."' },
+            { initial: 'C', border: 'border-white/20', quote: 'border-white/10', quoteColor: 'text-white/10', name: 'Camille / Paris', text: '"Got 67 with my bias and I was devastated 😭 But the report explained exactly WHY and it made so much sense. Worth every penny."' },
+            { initial: 'Y', border: 'border-white/20', quote: 'border-white/10', quoteColor: 'text-white/10', name: 'Yuki / Tokyo', text: '"The karmic past life section hit different. How does it know these things from just a birthday?"' },
+            { initial: 'I', border: 'border-white/20', quote: 'border-white/10', quoteColor: 'text-white/10', name: 'Isabella / São Paulo', text: '"My bias is Felix and I got CELESTIAL TWINFIRE 🔥 I\'ve been telling everyone. This is not like other compatibility tests at all."' },
+            { initial: 'H', border: 'border-white/20', quote: 'border-white/10', quoteColor: 'text-white/10', name: 'Hannah / Sydney', text: '"Skeptic turned believer. The energy analysis described a tension I couldn\'t even explain myself. Scary good."' },
+            { initial: 'N', border: 'border-white/20', quote: 'border-white/10', quoteColor: 'text-white/10', name: 'Nadia / Toronto', text: '"Did this at 2am and ended up reading the whole report. The 2026 destiny timeline has me actually planning my year differently lol"' },
+          ];
+          return <ReviewCarousel reviews={reviews} />;
+        })()}
 
         <footer className="mt-4 text-center pb-8 px-6">
           <p className="text-[10px] text-slate-600">BiasMatrix © 2026. All rights reserved.</p>
@@ -592,5 +463,113 @@ export default function Home() {
         </div>
       </div>
     </>
+  );
+}
+
+type ReviewItem = {
+
+  initial: string;
+  border: string;
+  quote: string;
+  quoteColor: string;
+  name: string;
+  text: string;
+};
+
+function ReviewCarousel({ reviews }: { reviews: ReviewItem[] }) {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const pauseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const scrollTo = useCallback((idx: number) => {
+    const container = scrollRef.current;
+    if (!container) return;
+    const card = container.children[idx] as HTMLElement;
+    if (!card) return;
+    container.scrollTo({ left: card.offsetLeft - container.offsetLeft, behavior: 'smooth' });
+    setActiveIdx(idx);
+  }, []);
+
+  // Auto-advance
+  useEffect(() => {
+    if (paused) return;
+    const timer = setInterval(() => {
+      setActiveIdx(prev => {
+        const next = (prev + 1) % reviews.length;
+        const container = scrollRef.current;
+        if (container) {
+          const card = container.children[next] as HTMLElement;
+          if (card) container.scrollTo({ left: card.offsetLeft - container.offsetLeft, behavior: 'smooth' });
+        }
+        return next;
+      });
+    }, 3500);
+    return () => clearInterval(timer);
+  }, [paused, reviews.length]);
+
+  // Pause on touch, resume after 6s
+  const handleTouchStart = () => {
+    setPaused(true);
+    if (pauseTimer.current) clearTimeout(pauseTimer.current);
+    pauseTimer.current = setTimeout(() => setPaused(false), 6000);
+  };
+
+  // Sync dot on manual scroll
+  const handleScroll = () => {
+    const container = scrollRef.current;
+    if (!container) return;
+    const scrollLeft = container.scrollLeft;
+    let closest = 0;
+    let minDist = Infinity;
+    Array.from(container.children).forEach((child, i) => {
+      const el = child as HTMLElement;
+      const dist = Math.abs(el.offsetLeft - container.offsetLeft - scrollLeft);
+      if (dist < minDist) { minDist = dist; closest = i; }
+    });
+    setActiveIdx(closest);
+  };
+
+  return (
+    <section className="pl-4 pb-4">
+      <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 pr-4">What Fans Are Saying</h2>
+      <div
+        ref={scrollRef}
+        onTouchStart={handleTouchStart}
+        onScroll={handleScroll}
+        className="flex overflow-x-auto gap-3 pb-3 pr-4 scrollbar-hide snap-x snap-mandatory"
+      >
+        {reviews.map((r, i) => (
+          <div
+            key={i}
+            className={`min-w-[62%] snap-center glass-panel p-4 rounded-2xl border ${r.quote} relative flex-shrink-0`}
+          >
+            <span className={`material-symbols-outlined absolute top-3 right-3 ${r.quoteColor} text-3xl`}>format_quote</span>
+            <div className="flex items-center gap-2 mb-2">
+              <div className={`w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border ${r.border} font-serif flex-shrink-0`}>{r.initial}</div>
+              <div>
+                <div className="flex text-primary mb-0.5">
+                  {Array.from({ length: 5 }).map((_, si) => (
+                    <span key={si} className="material-symbols-outlined text-xs" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                  ))}
+                </div>
+                <p className="text-white text-[11px] font-semibold leading-tight">{r.name}</p>
+              </div>
+            </div>
+            <p className="text-slate-300 text-xs italic leading-relaxed pr-4">{r.text}</p>
+          </div>
+        ))}
+      </div>
+      {/* Dot indicator */}
+      <div className="flex justify-center gap-1.5 mt-1 pr-4">
+        {reviews.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => { scrollTo(i); setPaused(true); if (pauseTimer.current) clearTimeout(pauseTimer.current); pauseTimer.current = setTimeout(() => setPaused(false), 6000); }}
+            className={`rounded-full transition-all duration-300 ${i === activeIdx ? 'w-4 h-1.5 bg-primary' : 'w-1.5 h-1.5 bg-white/20'}`}
+          />
+        ))}
+      </div>
+    </section>
   );
 }
