@@ -214,6 +214,9 @@ export default function Home() {
           </div>
         </section>
 
+        {/* DUMMY RESULTS CAROUSEL */}
+        <DummyResultCarousel />
+
         {/* SELECTORS */}
         <section className="px-6 space-y-3">
           <div className="relative z-20">
@@ -568,6 +571,219 @@ function ReviewCarousel({ reviews }: { reviews: ReviewItem[] }) {
             onClick={() => { scrollTo(i); setPaused(true); if (pauseTimer.current) clearTimeout(pauseTimer.current); pauseTimer.current = setTimeout(() => setPaused(false), 6000); }}
             className={`rounded-full transition-all duration-300 ${i === activeIdx ? 'w-4 h-1.5 bg-primary' : 'w-1.5 h-1.5 bg-white/20'}`}
           />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function DummyResultCarousel() {
+  const dummyResults = useMemo(() => [
+    {
+      name: "Emma",
+      score: 91,
+      keyword: "✦ CELESTIAL TWINFIRE ✦",
+      elementsData: [
+        { element: 'Fire', value: 90, icon: 'local_fire_department' },
+        { element: 'Wood', value: 75, icon: 'auto_awesome' },
+        { element: 'Water', value: 60, icon: 'water_drop' },
+        { element: 'Metal', value: 85, icon: 'token' },
+        { element: 'Earth', value: 70, icon: 'diamond' }
+      ],
+      text: '"Your souls are twin shooting stars 🔥" — Emma'
+    },
+    {
+      name: "Sarah",
+      score: 67,
+      keyword: "✦ KARMIC SPARK ✦",
+      elementsData: [
+        { element: 'Fire', value: 50, icon: 'local_fire_department' },
+        { element: 'Wood', value: 65, icon: 'auto_awesome' },
+        { element: 'Water', value: 80, icon: 'water_drop' },
+        { element: 'Metal', value: 45, icon: 'token' },
+        { element: 'Earth', value: 60, icon: 'diamond' }
+      ],
+      text: '"A destined friction meant to awaken your spirit 💫" — Sarah'
+    },
+    {
+      name: "Yuki",
+      score: 88,
+      keyword: "✦ TWINFLAME WILDFIRE ✦",
+      elementsData: [
+        { element: 'Fire', value: 85, icon: 'local_fire_department' },
+        { element: 'Wood', value: 70, icon: 'auto_awesome' },
+        { element: 'Water', value: 90, icon: 'water_drop' },
+        { element: 'Metal', value: 65, icon: 'token' },
+        { element: 'Earth', value: 80, icon: 'diamond' }
+      ],
+      text: '"His Fire ignites your deepest Water ✨" — Yuki'
+    },
+    {
+      name: "Priya",
+      score: 78,
+      keyword: "✦ CELESTIAL PULSE ✦",
+      elementsData: [
+        { element: 'Fire', value: 65, icon: 'local_fire_department' },
+        { element: 'Wood', value: 80, icon: 'auto_awesome' },
+        { element: 'Water', value: 55, icon: 'water_drop' },
+        { element: 'Metal', value: 75, icon: 'token' },
+        { element: 'Earth', value: 70, icon: 'diamond' }
+      ],
+      text: '"A cosmic dance of shadow and light 🌙" — Priya'
+    },
+    {
+      name: "Isabella",
+      score: 95,
+      keyword: "✦ TWIN FLAME DESTINY ✦",
+      elementsData: [
+        { element: 'Fire', value: 95, icon: 'local_fire_department' },
+        { element: 'Wood', value: 85, icon: 'auto_awesome' },
+        { element: 'Water', value: 80, icon: 'water_drop' },
+        { element: 'Metal', value: 90, icon: 'token' },
+        { element: 'Earth', value: 88, icon: 'diamond' }
+      ],
+      text: '"Souls bound across lifetimes 💎" — Isabella'
+    },
+    {
+      name: "Camille",
+      score: 73,
+      keyword: "✦ KARMIC ECHO ✦",
+      elementsData: [
+        { element: 'Fire', value: 60, icon: 'local_fire_department' },
+        { element: 'Wood', value: 70, icon: 'auto_awesome' },
+        { element: 'Water', value: 75, icon: 'water_drop' },
+        { element: 'Metal', value: 65, icon: 'token' },
+        { element: 'Earth', value: 80, icon: 'diamond' }
+      ],
+      text: '"The universe keeps pulling you back 🌌" — Camille'
+    },
+    {
+      name: "Hannah",
+      score: 85,
+      keyword: "✦ CELESTIAL VELOCITY ✦",
+      elementsData: [
+        { element: 'Fire', value: 80, icon: 'local_fire_department' },
+        { element: 'Wood', value: 90, icon: 'auto_awesome' },
+        { element: 'Water', value: 65, icon: 'water_drop' },
+        { element: 'Metal', value: 75, icon: 'token' },
+        { element: 'Earth', value: 85, icon: 'diamond' }
+      ],
+      text: '"Two forces destined to collide and create magic ⚡" — Hannah'
+    },
+    {
+      name: "Nadia",
+      score: 62,
+      keyword: "✦ COSMIC SPARK ✦",
+      elementsData: [
+        { element: 'Fire', value: 55, icon: 'local_fire_department' },
+        { element: 'Wood', value: 60, icon: 'auto_awesome' },
+        { element: 'Water', value: 70, icon: 'water_drop' },
+        { element: 'Metal', value: 50, icon: 'token' },
+        { element: 'Earth', value: 65, icon: 'diamond' }
+      ],
+      text: '"The tension between you is where the magic hides 🔮" — Nadia'
+    },
+    {
+      name: "Mia",
+      score: 90,
+      keyword: "✦ SOULFIRE BOND ✦",
+      elementsData: [
+        { element: 'Fire', value: 88, icon: 'local_fire_department' },
+        { element: 'Wood', value: 80, icon: 'auto_awesome' },
+        { element: 'Water', value: 85, icon: 'water_drop' },
+        { element: 'Metal', value: 90, icon: 'token' },
+        { element: 'Earth', value: 75, icon: 'diamond' }
+      ],
+      text: '"Your energies were written in the stars ⭐" — Mia'
+    },
+    {
+      name: "Zoe",
+      score: 77,
+      keyword: "✦ KARMIC WAVE ✦",
+      elementsData: [
+        { element: 'Fire', value: 70, icon: 'local_fire_department' },
+        { element: 'Wood', value: 65, icon: 'auto_awesome' },
+        { element: 'Water', value: 80, icon: 'water_drop' },
+        { element: 'Metal', value: 75, icon: 'token' },
+        { element: 'Earth', value: 72, icon: 'diamond' }
+      ],
+      text: '"A soul connection that transcends lifetimes 🌊" — Zoe'
+    }
+  ], []);
+
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const pauseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Auto-advance
+  useEffect(() => {
+    if (paused) return;
+    const timer = setInterval(() => {
+      setActiveIdx(prev => {
+        const next = (prev + 1) % dummyResults.length;
+        const container = scrollRef.current;
+        if (container) {
+          const card = container.children[next] as HTMLElement;
+          if (card) {
+            container.scrollTo({
+              left: card.offsetLeft - container.offsetLeft - (container.clientWidth - card.offsetWidth) / 2,
+              behavior: 'smooth'
+            });
+          }
+        }
+        return next;
+      });
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [paused, dummyResults.length]);
+
+  // Pause on touch, resume after 6s
+  const handleTouchStart = () => {
+    setPaused(true);
+    if (pauseTimer.current) clearTimeout(pauseTimer.current);
+    pauseTimer.current = setTimeout(() => setPaused(false), 6000);
+  };
+
+  const handleScroll = () => {
+    const container = scrollRef.current;
+    if (!container) return;
+    const scrollLeft = container.scrollLeft;
+    const containerCenter = scrollLeft + container.offsetWidth / 2;
+    
+    let closest = 0;
+    let minDist = Infinity;
+    
+    Array.from(container.children).forEach((child, i) => {
+      const el = child as HTMLElement;
+      const elCenter = el.offsetLeft - container.offsetLeft + el.offsetWidth / 2;
+      const dist = Math.abs(elCenter - containerCenter);
+      if (dist < minDist) { minDist = dist; closest = i; }
+    });
+    setActiveIdx(closest);
+  };
+
+  return (
+    <section className="w-full mt-2 mb-8">
+      <div
+        ref={scrollRef}
+        onTouchStart={handleTouchStart}
+        onScroll={handleScroll}
+        className="flex overflow-x-auto gap-4 px-[10%] pb-4 scrollbar-hide snap-x snap-mandatory items-stretch"
+      >
+        {dummyResults.map((r, i) => (
+          <div
+            key={i}
+            className="w-[80%] shrink-0 snap-center relative transition-all duration-500"
+            style={{ opacity: i === activeIdx ? 1 : 0.5, transform: i === activeIdx ? 'scale(1)' : 'scale(0.95)' }}
+          >
+            <CosmicHarmonyTeaser
+              score={r.score}
+              keyword={r.keyword}
+              teaserText={r.text}
+              elementsData={r.elementsData}
+            />
+          </div>
         ))}
       </div>
     </section>
