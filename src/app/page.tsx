@@ -416,38 +416,144 @@ export default function Home() {
         {/* REVIEWS */}
         <section className="pl-4 pb-4">
           <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 pr-4">What Fans Are Saying</h2>
-          <div className="flex overflow-x-auto gap-4 pb-4 pr-4 scrollbar-hide snap-x">
+          <div className="flex overflow-x-auto gap-4 pb-4 pr-4 scrollbar-hide snap-x snap-mandatory">
+
+            {/* 1 - Sarah */}
             <div className="min-w-[85%] snap-center glass-panel p-5 rounded-2xl border border-primary/20 relative flex-shrink-0">
               <span className="material-symbols-outlined absolute top-4 right-4 text-primary/20 text-4xl">format_quote</span>
               <div className="flex items-start gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-primary/30 font-serif">S</div>
                 <div>
-                  <div className="flex text-primary text-[10px] mb-1">
+                  <div className="flex text-primary mb-1">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <span key={i} className="material-symbols-outlined text-sm">star</span>
+                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
                     ))}
                   </div>
-                  <p className="text-white text-xs font-semibold">Sarah, LA</p>
+                  <p className="text-white text-xs font-semibold">Sarah / Los Angeles</p>
                 </div>
               </div>
-              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;The Twin Flame analysis was scarily accurate! I cried reading it.&quot;</p>
+              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;I got 91 with Jungkook and literally cried. The Twin Flame analysis described my personality so accurately I had to put my phone down.&quot;</p>
             </div>
 
+            {/* 2 - Min-ji */}
             <div className="min-w-[85%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
               <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
               <div className="flex items-start gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">M</div>
                 <div>
-                  <div className="flex text-primary text-[10px] mb-1">
+                  <div className="flex text-primary mb-1">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <span key={i} className="material-symbols-outlined text-sm">star</span>
+                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
                     ))}
                   </div>
-                  <p className="text-white text-xs font-semibold">Min-ji, Seoul</p>
+                  <p className="text-white text-xs font-semibold">Min-ji / Seoul</p>
                 </div>
               </div>
-              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;I didn&apos;t believe in Saju until this. It knew things about my personality I never told anyone.&quot;</p>
+              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;I didn&apos;t believe in this stuff until my friend sent me her result. Got 78 with Taehyung and the Cosmic Flow section was uncomfortably accurate.&quot;</p>
             </div>
+
+            {/* 3 - Priya */}
+            <div className="min-w-[85%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
+              <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
+              <div className="flex items-start gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">P</div>
+                <div>
+                  <div className="flex text-primary mb-1">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                    ))}
+                  </div>
+                  <p className="text-white text-xs font-semibold">Priya / London</p>
+                </div>
+              </div>
+              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;Showed this to my whole stan group. We all did it and spent 2 hours comparing results. The 2026 forecast part gave me chills.&quot;</p>
+            </div>
+
+            {/* 4 - Camille */}
+            <div className="min-w-[85%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
+              <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
+              <div className="flex items-start gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">C</div>
+                <div>
+                  <div className="flex text-primary mb-1">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                    ))}
+                  </div>
+                  <p className="text-white text-xs font-semibold">Camille / Paris</p>
+                </div>
+              </div>
+              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;Got 67 with my bias and I was devastated 😭 But the report explained exactly WHY and it made so much sense. Worth every penny.&quot;</p>
+            </div>
+
+            {/* 5 - Yuki */}
+            <div className="min-w-[85%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
+              <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
+              <div className="flex items-start gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">Y</div>
+                <div>
+                  <div className="flex text-primary mb-1">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                    ))}
+                  </div>
+                  <p className="text-white text-xs font-semibold">Yuki / Tokyo</p>
+                </div>
+              </div>
+              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;The karmic past life section hit different. How does it know these things from just a birthday?&quot;</p>
+            </div>
+
+            {/* 6 - Isabella */}
+            <div className="min-w-[85%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
+              <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
+              <div className="flex items-start gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">I</div>
+                <div>
+                  <div className="flex text-primary mb-1">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                    ))}
+                  </div>
+                  <p className="text-white text-xs font-semibold">Isabella / São Paulo</p>
+                </div>
+              </div>
+              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;My bias is Felix and I got CELESTIAL TWINFIRE 🔥 I&apos;ve been telling everyone. This is not like other compatibility tests at all.&quot;</p>
+            </div>
+
+            {/* 7 - Hannah */}
+            <div className="min-w-[85%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
+              <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
+              <div className="flex items-start gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">H</div>
+                <div>
+                  <div className="flex text-primary mb-1">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                    ))}
+                  </div>
+                  <p className="text-white text-xs font-semibold">Hannah / Sydney</p>
+                </div>
+              </div>
+              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;Skeptic turned believer. The energy analysis described a tension I couldn&apos;t even explain myself. Scary good.&quot;</p>
+            </div>
+
+            {/* 8 - Nadia */}
+            <div className="min-w-[85%] snap-center glass-panel p-5 rounded-2xl border border-white/10 relative flex-shrink-0">
+              <span className="material-symbols-outlined absolute top-4 right-4 text-white/10 text-4xl">format_quote</span>
+              <div className="flex items-start gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white border border-white/20 font-serif">N</div>
+                <div>
+                  <div className="flex text-primary mb-1">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                    ))}
+                  </div>
+                  <p className="text-white text-xs font-semibold">Nadia / Toronto</p>
+                </div>
+              </div>
+              <p className="text-slate-300 text-sm italic leading-relaxed">&quot;Did this at 2am and ended up reading the whole report. The 2026 destiny timeline has me actually planning my year differently lol&quot;</p>
+            </div>
+
           </div>
         </section>
 
