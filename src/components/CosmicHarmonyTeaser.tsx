@@ -93,11 +93,11 @@ export default function CosmicHarmonyTeaser({
     const handleSaveCard = async () => {
         if (!cardRef.current) return;
         setIsSaving(true);
+        const actionsDiv = cardRef.current.querySelector(".actions-container") as HTMLElement;
         try {
             if (watermarkRef.current) {
                 watermarkRef.current.style.display = "block";
             }
-            const actionsDiv = cardRef.current.querySelector(".actions-container") as HTMLElement;
             if (actionsDiv) {
                 actionsDiv.style.display = "none";
             }
@@ -112,13 +112,6 @@ export default function CosmicHarmonyTeaser({
                 logging: false,
             });
 
-            if (watermarkRef.current) {
-                watermarkRef.current.style.display = "none";
-            }
-            if (actionsDiv) {
-                actionsDiv.style.display = "flex";
-            }
-
             const dataUrl = canvas.toDataURL("image/png");
             const link = document.createElement("a");
             link.download = `biasmatrix-${userName || "synergy"}.png`;
@@ -128,6 +121,12 @@ export default function CosmicHarmonyTeaser({
             console.error("Failed to save card", err);
             alert("Failed to save image. Please try again.");
         } finally {
+            if (watermarkRef.current) {
+                watermarkRef.current.style.display = "none";
+            }
+            if (actionsDiv) {
+                actionsDiv.style.display = "flex";
+            }
             setIsSaving(false);
         }
     };
