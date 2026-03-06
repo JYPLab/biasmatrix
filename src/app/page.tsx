@@ -542,7 +542,7 @@ function ReviewCarousel({ reviews }: { reviews: ReviewItem[] }) {
         {reviews.map((r, i) => (
           <div
             key={i}
-            className={`min-w-[62%] snap-center glass-panel p-4 rounded-2xl border ${r.quote} relative flex-shrink-0`}
+            className={`w-[62%] snap-center glass-panel p-4 rounded-2xl border ${r.quote} relative flex-shrink-0 overflow-hidden`}
           >
             <span className={`material-symbols-outlined absolute top-3 right-3 ${r.quoteColor} text-3xl`}>format_quote</span>
             <div className="flex items-center gap-2 mb-2">
@@ -556,7 +556,7 @@ function ReviewCarousel({ reviews }: { reviews: ReviewItem[] }) {
                 <p className="text-white text-[11px] font-semibold leading-tight">{r.name}</p>
               </div>
             </div>
-            <p className="text-slate-300 text-xs italic leading-relaxed pr-4">{r.text}</p>
+            <p className="text-slate-300 text-xs italic leading-relaxed pr-4 break-words">{r.text}</p>
           </div>
         ))}
       </div>
