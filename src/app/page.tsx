@@ -376,43 +376,85 @@ export default function Home() {
             <span className="material-symbols-outlined text-primary text-sm">lock</span> 🔒 Unlock the Full BiasMatrix
           </h2>
 
-          <div className="relative rounded-2xl overflow-hidden bg-surface border border-white/5 h-24 group">
-            <div className="absolute inset-0 p-5 flex justify-between items-center z-0 opacity-40 blur-[2px]">
-              <div>
-                <h3 className="font-serif text-lg text-white mb-1">📜 The Twin Flame Analysis</h3>
-                <p className="text-xs text-slate-400">Why your souls met in this lifetime.</p>
-              </div>
-              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+          {/* Card 1 */}
+          <div className="relative rounded-2xl overflow-hidden bg-surface border border-white/5 p-5 flex flex-col gap-3 group">
+            <div className="flex justify-between items-start z-10">
+              <h3 className="font-serif text-lg text-white">🕯️ The Twin Flame Analysis</h3>
+              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
                 <span className="material-symbols-outlined text-primary/50 text-sm">favorite</span>
               </div>
             </div>
-            <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 backdrop-blur-[1px]"></div>
+            
+            <div className="relative z-0 mt-1 pb-1">
+              <p className="text-[13px] text-slate-300 leading-relaxed font-lora select-none">
+                "In a distant epoch, long before the modern world began, you were a Keeper of the Sacred Flame and he was the Silent Guardian..."
+              </p>
+              <div 
+                className="absolute inset-0 backdrop-blur-[2px] pointer-events-none" 
+                style={{ 
+                  maskImage: 'linear-gradient(to bottom, transparent 30%, black 80%)',
+                  WebkitMaskImage: 'linear-gradient(to bottom, transparent 30%, black 80%)'
+                }}
+              ></div>
+            </div>
+
+            <button className="z-10 mt-2 w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white text-[13px] font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
+              <span className="material-symbols-outlined text-[16px] text-primary">lock_open</span> Unlock Full Report
+            </button>
           </div>
 
-          <div className="relative rounded-2xl overflow-hidden bg-surface border border-white/5 h-24 group">
-            <div className="absolute inset-0 p-5 flex justify-between items-center z-0 opacity-40 blur-[2px]">
-              <div>
-                <h3 className="font-serif text-lg text-white mb-1">🌊 Energy Flow &amp; Conflicts</h3>
-                <p className="text-xs text-slate-400">Detailed compatibility matrix.</p>
-              </div>
-              <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+          {/* Card 2 */}
+          <div className="relative rounded-2xl overflow-hidden bg-surface border border-white/5 p-5 flex flex-col gap-3 group">
+            <div className="flex justify-between items-start z-10">
+              <h3 className="font-serif text-lg text-white">⚡ The Cosmic Flow & Friction</h3>
+              <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center shrink-0">
                 <span className="material-symbols-outlined text-blue-500/50 text-sm">water</span>
               </div>
             </div>
-            <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 backdrop-blur-[1px]"></div>
+            
+            <div className="relative z-0 mt-1 pb-1">
+              <p className="text-[13px] text-slate-300 leading-relaxed font-lora select-none">
+                "Your Fire energy is the mother of his Earth energy, creating a profound nurturing loop where your passion literally gives life to his stability..."
+              </p>
+              <div 
+                className="absolute inset-0 backdrop-blur-[2px] pointer-events-none" 
+                style={{ 
+                  maskImage: 'linear-gradient(to bottom, transparent 30%, black 80%)',
+                  WebkitMaskImage: 'linear-gradient(to bottom, transparent 30%, black 80%)'
+                }}
+              ></div>
+            </div>
+
+            <button className="z-10 mt-2 w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white text-[13px] font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
+              <span className="material-symbols-outlined text-[16px] text-blue-400">lock_open</span> Unlock Full Report
+            </button>
           </div>
 
-          <div className="relative rounded-2xl overflow-hidden bg-surface border border-white/5 h-24 group">
-            <div className="absolute inset-0 p-5 flex justify-between items-center z-0 opacity-40 blur-[2px]">
-              <div>
-                <h3 className="font-serif text-lg text-white mb-1">⏳ 2026 Destiny Timeline</h3>
-                <p className="text-xs text-slate-400">Detailed monthly forecast &amp; advice.</p>
-              </div>
-              <div className="w-10 h-10 rounded-full bg-rose-500/20 flex items-center justify-center">
+          {/* Card 3 */}
+          <div className="relative rounded-2xl overflow-hidden bg-surface border border-white/5 p-5 flex flex-col gap-3 group">
+            <div className="flex justify-between items-start z-10">
+              <h3 className="font-serif text-lg text-white">🔮 The 2026-2027 Destiny Forecast</h3>
+              <div className="w-8 h-8 rounded-full bg-rose-500/20 flex items-center justify-center shrink-0">
                 <span className="material-symbols-outlined text-rose-500/50 text-sm">calendar_month</span>
               </div>
             </div>
-            <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 backdrop-blur-[1px]"></div>
+            
+            <div className="relative z-0 mt-1 pb-1">
+              <p className="text-[13px] text-slate-300 leading-relaxed font-lora select-none">
+                "The years 2026 and 2027 are designated as Years of Fire and Bloom in your Saju, perfectly aligning with a major transformative cycle..."
+              </p>
+              <div 
+                className="absolute inset-0 backdrop-blur-[2px] pointer-events-none" 
+                style={{ 
+                  maskImage: 'linear-gradient(to bottom, transparent 30%, black 80%)',
+                  WebkitMaskImage: 'linear-gradient(to bottom, transparent 30%, black 80%)'
+                }}
+              ></div>
+            </div>
+
+            <button className="z-10 mt-2 w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white text-[13px] font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
+              <span className="material-symbols-outlined text-[16px] text-rose-400">lock_open</span> Unlock Full Report
+            </button>
           </div>
         </section>
 
