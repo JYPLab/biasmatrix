@@ -21,10 +21,12 @@ export async function POST(request: Request) {
         // const saju = new Manseryeok({ date: birth_date, time: adjustedTime });
         // const elements = saju.getFiveElements();
 
-        // 3. Save User to DB
-        const { data: user, error: userError } = await supabase.from('users').insert({
+        // 3. Save User to DB (Upsert to avoid duplicates)
+        const { data: user, error: userError } = await supabase.from('users').upsert({
             email, nickname, birth_date, birth_city, longitude, is_time_known, birth_time
-        }).select().single();
+        }, { onConflict: 'email', ignoreDuplicates: false })
+            .select()
+            .single();
 
         if (userError) throw userError;
 

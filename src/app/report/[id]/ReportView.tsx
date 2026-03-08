@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
+import ReviewSection from '@/components/ReviewSection';
 
 interface SubSection {
     title?: string;
@@ -292,13 +293,18 @@ export default function ReportView({ reportData, mock, reportId }: { reportData:
                                 );
                             })}
                         </div>
-                        
+
                         <div className="mt-12 flex flex-col md:flex-row gap-4 justify-center items-center print:hidden">
                             <button onClick={handleShareBottom} className="w-full md:w-auto bg-gradient-to-r from-[#D4AF37] to-[#B8962E] text-[#0A0A0A] hover:opacity-90 px-8 py-3.5 rounded-full font-serif text-[13px] tracking-widest font-bold transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(212,175,55,0.3)]">
                                 📤 Share my report
                             </button>
                         </div>
                     </section>
+                )}
+
+                {/* Review Section */}
+                {!mock && (
+                    <ReviewSection reportId={reportId} />
                 )}
             </main>
 

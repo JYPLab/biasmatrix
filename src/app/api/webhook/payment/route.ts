@@ -161,29 +161,77 @@ Generate a massive, deeply detailed, and comprehensive destiny report analyzing 
         }).eq('id', reportId);
 
         // 5. Send Email via Resend in Persona
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://biasmatrix.com';
-        const magicLink = `${appUrl}/report/${reportId}`;
+        const finalMagicLink = \`https://biasmatrix.com/report/\${reportId}\`;
+
+        const textContent = \`Hi \${report.users.nickname},
+
+Thank you for your patience. Your personal cosmic synergy report with \${report.idols.member_name} has been successfully generated.
+
+Our celestial analysis has revealed the unique karmic ties and dynamic destiny between you two. You can access your 15-page deep dive through the permanent link below:
+
+\${finalMagicLink}
+
+(If the link is not clickable, please copy and paste it into your browser.)
+
+If you have any questions or need assistance, simply reply to this email. We're always here to help.
+
+Stay cosmic,
+Sarah from BiasMatrix
+
+---
+BiasMatrix
+Unsubscribe: https://biasmatrix.com/unsubscribe
+\`;
+
+        const htmlContent = \`
+<div style="font-family: sans-serif; color: #111111; max-width: 600px; margin: 0 auto; padding: 40px 20px; text-align: left; background-color: #ffffff; line-height: 1.6;">
+  <p style="font-size: 16px; color: #111111;">Hi \${report.users.nickname},</p>
+  
+  <p style="font-size: 16px; color: #111111; margin-top: 24px;">
+      Thank you for your patience. Your personal cosmic synergy report with \${report.idols.member_name} has been successfully generated.
+  </p>
+  
+  <p style="font-size: 16px; color: #111111;">
+      Our celestial analysis has revealed the unique karmic ties and dynamic destiny between you two. You can access your 15-page deep dive through the permanent link below:
+  </p>
+  
+  <div style="margin: 40px 0;">
+      <a href="\${finalMagicLink}" style="display: inline-block; padding: 14px 32px; background-color: #111111; color: #ffffff; text-decoration: none; font-weight: bold; font-family: sans-serif; letter-spacing: 0.5px; border-radius: 6px;">
+          View Your Full Report
+      </a>
+  </div>
+  
+  <p style="font-size: 14px; color: #666666; margin-top: 24px;">
+      (If the link is not clickable, please copy and paste it into your browser.)<br>
+      <a href="\${finalMagicLink}" style="color: #111111; word-break: break-all;">\${finalMagicLink}</a>
+  </p>
+  
+  <p style="font-size: 16px; color: #111111; margin-top: 32px;">
+      If you have any questions or need assistance, simply reply to this email. We're always here to help.
+  </p>
+  
+  <p style="font-size: 16px; color: #111111; margin-top: 32px;">
+      Stay cosmic,<br>
+      Sarah from BiasMatrix
+  </p>
+  
+  <hr style="border: none; border-top: 1px solid #EAEAEA; margin: 48px 0 24px 0;">
+  
+  <div style="font-size: 12px; color: #999999; text-align: left;">
+      BiasMatrix<br>
+      <a href="https://biasmatrix.com/unsubscribe" style="color: #999999; text-decoration: underline;">Unsubscribe</a>
+  </div>
+</div>\`;
 
         const { data: emailData, error: emailError } = await resend.emails.send({
-          from: 'BiasMatrix Oracle <hello@biasmatrix.com>',
+          from: 'Sarah <sarah@biasmatrix.com>',
           to: report.users.email,
-          subject: `The stars have spoken. Your Cosmic Harmony with ${report.idols.member_name} is ready. ✨`,
-          html: `
-                    <div style="font-family: serif; color: #111111; max-width: 600px; margin: 0 auto; padding: 40px 20px; text-align: center; background-color: #FAFAFA; border: 1px solid #EAEAEA; border-radius: 12px;">
-                        <h1 style="color: #D4AF37; font-size: 24px; letter-spacing: 2px; text-transform: uppercase;">The Wait is Over, ${report.users.nickname}</h1>
-                        <p style="font-size: 16px; line-height: 1.8; color: #4A4A4A; margin-top: 24px;">
-                            The cosmos have aligned to reveal the profound karmic ties and dynamic destiny between you and <strong>${report.idols.member_name}</strong>.
-                        </p>
-                        <p style="font-size: 16px; line-height: 1.8; color: #4A4A4A;">
-                            Your massive 15-page cosmic SoulMatch premium report has been inscribed. Prepare to discover your true Twin Flame energy, past life echoes, and the deeply detailed 2026 destiny timeline waiting for you.
-                        </p>
-                        <a href="${magicLink}" style="display: inline-block; margin-top: 32px; padding: 16px 32px; background-color: #111111; color: #D4AF37; text-decoration: none; font-weight: bold; font-family: sans-serif; letter-spacing: 1px; border-radius: 40px; border: 1px solid #D4AF37;">
-                            UNLOCK MY DESTINY
-                        </a>
-                        <p style="font-size: 12px; color: #999999; margin-top: 48px; text-transform: uppercase; letter-spacing: 1px;">
-                            The universe makes no mistakes.<br>BiasMatrix Premium Astrology
-                        </p>
-                    </div>`
+          subject: \`\${report.users.nickname}, your report with \${report.idols.member_name} is ready\`,
+          text: textContent,
+          html: htmlContent,
+          headers: {
+            'List-Unsubscribe': '<https://biasmatrix.com/unsubscribe>'
+          }
         });
 
         if (emailError) {
