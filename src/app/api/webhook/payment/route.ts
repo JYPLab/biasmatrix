@@ -161,15 +161,15 @@ Generate a massive, deeply detailed, and comprehensive destiny report analyzing 
         }).eq('id', reportId);
 
         // 5. Send Email via Resend in Persona
-        const finalMagicLink = \`https://biasmatrix.com/report/\${reportId}\`;
+        const finalMagicLink = `https://biasmatrix.com/report/${reportId}`;
 
-        const textContent = \`Hi \${report.users.nickname},
+        const textContent = `Hi ${report.users.nickname},
 
-Thank you for your patience. Your personal cosmic synergy report with \${report.idols.member_name} has been successfully generated.
+Thank you for your patience. Your personal cosmic synergy report with ${report.idols.member_name} has been successfully generated.
 
 Our celestial analysis has revealed the unique karmic ties and dynamic destiny between you two. You can access your 15-page deep dive through the permanent link below:
 
-\${finalMagicLink}
+${finalMagicLink}
 
 (If the link is not clickable, please copy and paste it into your browser.)
 
@@ -181,14 +181,14 @@ Sarah from BiasMatrix
 ---
 BiasMatrix
 Unsubscribe: https://biasmatrix.com/unsubscribe
-\`;
+`;
 
-        const htmlContent = \`
+        const htmlContent = `
 <div style="font-family: sans-serif; color: #111111; max-width: 600px; margin: 0 auto; padding: 40px 20px; text-align: left; background-color: #ffffff; line-height: 1.6;">
-  <p style="font-size: 16px; color: #111111;">Hi \${report.users.nickname},</p>
+  <p style="font-size: 16px; color: #111111;">Hi ${report.users.nickname},</p>
   
   <p style="font-size: 16px; color: #111111; margin-top: 24px;">
-      Thank you for your patience. Your personal cosmic synergy report with \${report.idols.member_name} has been successfully generated.
+      Thank you for your patience. Your personal cosmic synergy report with ${report.idols.member_name} has been successfully generated.
   </p>
   
   <p style="font-size: 16px; color: #111111;">
@@ -196,14 +196,14 @@ Unsubscribe: https://biasmatrix.com/unsubscribe
   </p>
   
   <div style="margin: 40px 0;">
-      <a href="\${finalMagicLink}" style="display: inline-block; padding: 14px 32px; background-color: #111111; color: #ffffff; text-decoration: none; font-weight: bold; font-family: sans-serif; letter-spacing: 0.5px; border-radius: 6px;">
+      <a href="${finalMagicLink}" style="display: inline-block; padding: 14px 32px; background-color: #111111; color: #ffffff; text-decoration: none; font-weight: bold; font-family: sans-serif; letter-spacing: 0.5px; border-radius: 6px;">
           View Your Full Report
       </a>
   </div>
   
   <p style="font-size: 14px; color: #666666; margin-top: 24px;">
       (If the link is not clickable, please copy and paste it into your browser.)<br>
-      <a href="\${finalMagicLink}" style="color: #111111; word-break: break-all;">\${finalMagicLink}</a>
+      <a href="${finalMagicLink}" style="color: #111111; word-break: break-all;">${finalMagicLink}</a>
   </p>
   
   <p style="font-size: 16px; color: #111111; margin-top: 32px;">
@@ -221,12 +221,12 @@ Unsubscribe: https://biasmatrix.com/unsubscribe
       BiasMatrix<br>
       <a href="https://biasmatrix.com/unsubscribe" style="color: #999999; text-decoration: underline;">Unsubscribe</a>
   </div>
-</div>\`;
+</div>`;
 
         const { data: emailData, error: emailError } = await resend.emails.send({
           from: 'Sarah <sarah@biasmatrix.com>',
           to: report.users.email,
-          subject: \`\${report.users.nickname}, your report with \${report.idols.member_name} is ready\`,
+          subject: `${report.users.nickname}, your report with ${report.idols.member_name} is ready`,
           text: textContent,
           html: htmlContent,
           headers: {
