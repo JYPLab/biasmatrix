@@ -57,7 +57,7 @@ export default function ReviewSection({ reportId }: { reportId: string }) {
             <div className="bg-[#111111] border border-[#D4AF37]/20 rounded-2xl p-8 mt-12 shadow-[0_4px_30px_rgba(212,175,55,0.05)]">
                 <div className="text-center mb-6">
                     <h3 className="text-2xl font-serif text-white tracking-wide">Share Your Experience</h3>
-                    <p className="text-[#D4AF37]/60 text-xs tracking-widest uppercase mt-2">How accurate was your report?</p>
+                    <p className="text-[#D4AF37]/60 text-xs tracking-widest uppercase mt-2">Did this report resonate with you? ⭐</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
