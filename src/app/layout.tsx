@@ -23,8 +23,36 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "BiasMatrix - K-Pop Destiny Analysis",
-  description: "Discover the Karmic Synergy with your Bias. A premium K-Pop destiny analysis blending Korean Saju and Western Twin Flame storytelling.",
+  metadataBase: new URL('https://biasmatrix.com'),
+  title: {
+    default: 'K-Pop Twin Flame Analysis | Bias Soulmate Report | BiasMatrix',
+    template: '%s | BiasMatrix',
+  },
+  description: 'Discover your karmic synergy with your K-pop bias. Powered by Korean Saju astrology — get your personal Twin Flame compatibility score and 15-page deep report. Free to try.',
+  openGraph: {
+    title: "What's your K-Pop Twin Flame score? ✨",
+    description: 'Find your karmic synergy with your bias. Powered by Korean Saju — free to try.',
+    url: 'https://biasmatrix.com',
+    siteName: 'BiasMatrix',
+    images: [
+      {
+        url: 'https://biasmatrix.com/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'BiasMatrix - K-Pop Twin Flame Analysis',
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "What's your K-Pop Twin Flame score? ✨",
+    description: 'Find your karmic synergy with your bias.',
+    images: ['https://biasmatrix.com/og-image.png'],
+  },
+  alternates: {
+    canonical: 'https://biasmatrix.com',
+  },
 };
 
 export default function RootLayout({
