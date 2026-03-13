@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     siteName: 'BiasMatrix',
     images: [
       {
-        url: 'https://biasmatrix.com/og-image.png',
+        url: '/opengraph-image',
         width: 1200,
         height: 630,
         alt: 'BiasMatrix - K-Pop Twin Flame Analysis',
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: "What's your K-Pop Twin Flame score? ✨",
     description: 'Find your karmic synergy with your bias.',
-    images: ['https://biasmatrix.com/og-image.png'],
+    images: ['/opengraph-image'],
   },
   alternates: {
     canonical: 'https://biasmatrix.com',
