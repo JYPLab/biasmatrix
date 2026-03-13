@@ -34,12 +34,14 @@ export const metadata: Metadata = {
     description: 'Find your karmic synergy with your bias. Powered by Korean Saju — free to try.',
     url: 'https://biasmatrix.com',
     siteName: 'BiasMatrix',
+    locale: 'en_US',
     images: [
       {
         url: '/opengraph-image',
         width: 1200,
         height: 630,
         alt: 'BiasMatrix - K-Pop Twin Flame Analysis',
+        type: 'image/png',
       },
     ],
     type: 'website',

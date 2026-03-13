@@ -43,7 +43,7 @@ export async function generateMetadata(
         description: `${userName}'s ${finalScore}/100 ${typeName} with ${idolName}. Discover your past life echoes, karmic flow, and 2026 destiny timeline.`,
         openGraph: {
             title: `${userName} got ${finalScore}/100 ${typeName} with ${idolName} ✨`,
-            description: `His Sacred Earth grounds her celestial fire across lifetimes. Discover your own karmic synergy.`,
+            description: `${idolName}'s energy resonates across lifetimes. Discover your own karmic synergy.`,
             url: `https://biasmatrix.com/report/${id}`,
             images: [
                 {
@@ -51,6 +51,7 @@ export async function generateMetadata(
                     width: 1200,
                     height: 630,
                     alt: `${userName} & ${idolName} SoulMatch Report`,
+                    type: 'image/png',
                 },
             ],
             type: 'website',
@@ -58,7 +59,8 @@ export async function generateMetadata(
         twitter: {
             card: 'summary_large_image',
             title: `${userName} got ${finalScore}/100 ${typeName} with ${idolName} ✨`,
-            description: `His Sacred Earth grounds her celestial fire across lifetimes. Discover your own karmic synergy.`,
+            description: `${idolName}'s energy resonates across lifetimes. Discover your own karmic synergy.`,
+            images: [`/report/${id}/opengraph-image`],
         },
         alternates: {
             canonical: `https://biasmatrix.com/report/${id}`,
