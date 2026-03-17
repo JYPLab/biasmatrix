@@ -108,10 +108,7 @@ export default function CosmicHarmonyTeaser({
             const dataUrl = await toPng(cardRef.current, {
                 cacheBust: false,
                 backgroundColor: "#111111",
-                style: {
-                    transform: "scale(1)",
-                    transformOrigin: "top left"
-                },
+                pixelRatio: 1,
                 width: cardRef.current.offsetWidth,
                 height: cardRef.current.offsetHeight,
             });
