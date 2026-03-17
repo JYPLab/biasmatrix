@@ -105,13 +105,33 @@ export default function CosmicHarmonyTeaser({
             // Small delay to ensure layout updates
             await new Promise((resolve) => setTimeout(resolve, 50));
 
-            const dataUrl = await toPng(cardRef.current, {
-                cacheBust: false,
-                backgroundColor: "#111111",
-                pixelRatio: 1,
-                width: cardRef.current.offsetWidth,
-                height: cardRef.current.offsetHeight,
-            });
+            const cardEl = cardRef.current;
+            const cardWidth = cardEl.offsetWidth;
+            const cardHeight = cardEl.offsetHeight;
+
+            // Temporarily move card to a fixed wrapper at (0,0) to avoid
+            // mx-auto centering offset baked into the captured canvas
+            const wrapper = document.createElement("div");
+            wrapper.style.cssText = `position:fixed;top:0;left:0;width:${cardWidth}px;height:${cardHeight}px;overflow:hidden;z-index:-9999;pointer-events:none;`;
+            document.body.appendChild(wrapper);
+            const placeholder = document.createElement("div");
+            cardEl.parentNode!.insertBefore(placeholder, cardEl);
+            wrapper.appendChild(cardEl);
+
+            let dataUrl: string;
+            try {
+                dataUrl = await toPng(wrapper, {
+                    cacheBust: false,
+                    backgroundColor: "#111111",
+                    pixelRatio: 2,
+                    width: cardWidth,
+                    height: cardHeight,
+                });
+            } finally {
+                placeholder.parentNode!.insertBefore(cardEl, placeholder);
+                placeholder.remove();
+                document.body.removeChild(wrapper);
+            }
 
             const link = document.createElement("a");
             link.download = `biasmatrix-${userName || "synergy"}.png`;
