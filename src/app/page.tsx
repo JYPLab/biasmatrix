@@ -52,10 +52,13 @@ export default function Home() {
       const { data } = await supabase.from('idols').select('*');
       if (data) {
         setIdols(data);
-        const btsMembers = data.filter(i => i.group_name === 'BTS').sort((a, b) => a.member_name.localeCompare(b.member_name));
-        if (btsMembers.length > 0) {
-          const jk = btsMembers.find(m => m.member_name === 'Jungkook');
-          setSelectedMember(jk ? jk.id : btsMembers[0].id);
+        const firstGroup = [...data].sort((a, b) => a.group_name.localeCompare(b.group_name))[0]?.group_name || 'BTS';
+        setSelectedGroup(firstGroup);
+        const firstGroupMembers = data.filter(i => i.group_name === firstGroup)
+          .sort((a, b) => a.member_name.localeCompare(b.member_name));
+        if (firstGroupMembers.length > 0) {
+          const jk = firstGroupMembers.find(m => m.member_name === 'Jungkook');
+          setSelectedMember(jk ? jk.id : firstGroupMembers[0].id);
         }
       }
     }
