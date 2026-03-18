@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display, Lora } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({
@@ -68,6 +69,13 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
+      <Script src="https://www.googletagmanager.com/gtag/js?id=G-8GQPNQZ4XZ" strategy="afterInteractive" />
+      <Script id="ga-init" strategy="afterInteractive">{`
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-8GQPNQZ4XZ');
+      `}</Script>
       <body
         className={`${inter.variable} ${playfair.variable} ${lora.variable} antialiased bg-onyx text-slate-100 font-sans min-h-screen relative overflow-x-hidden selection:bg-primary selection:text-onyx`}
       >
