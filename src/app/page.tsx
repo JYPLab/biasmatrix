@@ -131,14 +131,21 @@ export default function Home() {
     // Show success immediately
     setIsSent(true);
 
-    // Fire API in background (fire-and-forget)
-    axios.post('/api/webhook/payment', {
-      meta: {
-        event_name: 'order_created',
-        custom_data: { report_id: reportId, email: stickyEmail }
-      }
-    }, {
-      headers: { 'x-mock-bypass': 'true' }
+    // Fire API in background using fetch with keepalive
+    // keepalive ensures the request completes even if user navigates away
+    fetch('/api/webhook/payment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-mock-bypass': 'true'
+      },
+      body: JSON.stringify({
+        meta: {
+          event_name: 'order_created',
+          custom_data: { report_id: reportId, email: stickyEmail }
+        }
+      }),
+      keepalive: true
     }).catch(err => {
       console.error("Send report error:", err);
     });
