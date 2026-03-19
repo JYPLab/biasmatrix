@@ -27,6 +27,7 @@ export default function Home() {
   const [name, setName] = useState('');
   const [stickyEmail, setStickyEmail] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const [isSent, setIsSent] = useState(false);
   const [month, setMonth] = useState('');
   const [day, setDay] = useState('');
   const [year, setYear] = useState('');
@@ -117,7 +118,7 @@ export default function Home() {
     setShowDropdown(false);
   };
 
-  const handleSendReport = async () => {
+  const handleSendReport = () => {
     if (!stickyEmail) {
       alert("Please enter your email address.");
       return;
@@ -126,27 +127,21 @@ export default function Home() {
       alert("Please submit your Celestial Profile first by clicking 'Discover My Synergy'.");
       return;
     }
-    setIsSending(true);
-    try {
-      const res = await axios.post('/api/webhook/payment', {
-        meta: {
-          event_name: 'order_created',
-          custom_data: { report_id: reportId, email: stickyEmail }
-        }
-      }, {
-        headers: { 'x-mock-bypass': 'true' }
-      });
-      if (res.data.success) {
-        alert("✨ Your cosmic report is on its way! Please check your email inbox for the private link.");
-      } else {
-        alert("Something went wrong: " + res.data.error);
+
+    // Show success immediately
+    setIsSent(true);
+
+    // Fire API in background (fire-and-forget)
+    axios.post('/api/webhook/payment', {
+      meta: {
+        event_name: 'order_created',
+        custom_data: { report_id: reportId, email: stickyEmail }
       }
-    } catch (err) {
+    }, {
+      headers: { 'x-mock-bypass': 'true' }
+    }).catch(err => {
       console.error("Send report error:", err);
-      alert("Error sending report. Please try again.");
-    } finally {
-      setIsSending(false);
-    }
+    });
   };
 
   const handleAnalyze = async () => {
@@ -484,30 +479,49 @@ export default function Home() {
       {/* STICKY CTA */}
       <div className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-5 pt-10 bg-gradient-to-t from-onyx via-onyx/95 to-transparent">
         <div className="max-w-md mx-auto">
-          <div className="w-full bg-gradient-to-r from-primary-light via-primary to-yellow-600 rounded-2xl p-[1.5px] shadow-[0_0_40px_rgba(212,175,55,0.3)]">
-            <div className="w-full bg-[#141414] rounded-[14px] px-4 py-3 flex items-center gap-3 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/15 to-transparent"></div>
-              <input
-                type="email"
-                value={stickyEmail}
-                onChange={(e) => setStickyEmail(e.target.value)}
-                placeholder="Your email address"
-                className="relative z-10 flex-1 min-w-0 bg-transparent text-white text-base placeholder:text-slate-400 outline-none border-none focus:ring-0"
-              />
-              <div className="relative z-10 w-px h-6 bg-white/20 flex-shrink-0" />
-              <button
-                onClick={handleSendReport}
-                disabled={isSending}
-                className="relative z-10 bg-gradient-to-r from-primary-light to-primary text-onyx font-extrabold text-sm px-5 py-2.5 rounded-xl whitespace-nowrap hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 flex-shrink-0 shadow-md"
-              >
-                {isSending ? 'Sending…' : 'Send ✨'}
-              </button>
+          {isSent ? (
+            /* SUCCESS STATE */
+            <div className="w-full bg-gradient-to-r from-emerald-500/20 via-emerald-400/10 to-emerald-500/20 rounded-2xl p-[1.5px] shadow-[0_0_40px_rgba(52,211,153,0.2)]">
+              <div className="w-full bg-[#141414] rounded-[14px] px-5 py-4 flex flex-col items-center gap-2 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent"></div>
+                <div className="relative z-10 flex items-center gap-2">
+                  <span className="material-symbols-outlined text-emerald-400 text-xl" style={{fontVariationSettings: "'FILL' 1"}}>check_circle</span>
+                  <span className="text-white font-bold text-sm">Successfully submitted!</span>
+                </div>
+                <p className="relative z-10 text-slate-300 text-xs text-center leading-relaxed">
+                  ✨ Please check your email within <span className="text-emerald-400 font-semibold">3~5 minutes</span>.
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center justify-center gap-2 mt-2">
-            <span className="bg-primary/20 border border-primary/40 text-primary-light text-xs font-bold px-3 py-0.5 rounded-full tracking-wide uppercase">🎁 100% Free</span>
-            <span className="text-slate-300 text-xs">— Get your full cosmic report</span>
-          </div>
+          ) : (
+            /* DEFAULT EMAIL INPUT STATE */
+            <>
+              <div className="w-full bg-gradient-to-r from-primary-light via-primary to-yellow-600 rounded-2xl p-[1.5px] shadow-[0_0_40px_rgba(212,175,55,0.3)]">
+                <div className="w-full bg-[#141414] rounded-[14px] px-4 py-3 flex items-center gap-3 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/15 to-transparent"></div>
+                  <input
+                    type="email"
+                    value={stickyEmail}
+                    onChange={(e) => setStickyEmail(e.target.value)}
+                    placeholder="Your email address"
+                    className="relative z-10 flex-1 min-w-0 bg-transparent text-white text-base placeholder:text-slate-400 outline-none border-none focus:ring-0"
+                  />
+                  <div className="relative z-10 w-px h-6 bg-white/20 flex-shrink-0" />
+                  <button
+                    onClick={handleSendReport}
+                    disabled={isSending}
+                    className="relative z-10 bg-gradient-to-r from-primary-light to-primary text-onyx font-extrabold text-sm px-5 py-2.5 rounded-xl whitespace-nowrap hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 flex-shrink-0 shadow-md"
+                  >
+                    {isSending ? 'Sending…' : 'Send ✨'}
+                  </button>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-2 mt-2">
+                <span className="bg-primary/20 border border-primary/40 text-primary-light text-xs font-bold px-3 py-0.5 rounded-full tracking-wide uppercase">🎁 100% Free</span>
+                <span className="text-slate-300 text-xs">— Get your full cosmic report</span>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </>
